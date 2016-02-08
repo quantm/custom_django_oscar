@@ -1,0 +1,177 @@
+.clear {
+    clear: both;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.btn.bookmarklet {
+    background-position: 0;
+    padding: 4px !important;
+}
+.child{
+    display: inline-block;
+}
+.selected_user{
+    border: 1px solid #FF0000;
+}
+.thumbnail {
+    border: none;
+    border-radius: 8px;
+}
+
+body {
+    padding-top: 40px;
+}
+
+@media (max-width: 767px) {
+  body {
+    padding: 0 !important;
+  }
+}
+
+.navbar-inner h2 {
+    font-size: 22px;
+    color: white;
+    font-family: "HelveticaNeue-UltraLight", sans-serif;
+    font-weight: normal;
+    margin: 0;
+}
+
+.container-fluid {
+    width: 100%;
+}
+
+footer {
+    height: 20px;
+}
+
+.avatar.small {
+    width: 22px;
+    border: 1px solid #d4d4d4;
+}
+
+.comment_avatar{
+    height: 45px;
+    width: 45px;
+    display: inline-block;
+    border: 1px solid #A9A9A9;
+}
+
+.participantupdate{
+    display: inline-block;
+    margin-left: 130px;
+}
+.display_none{
+    display: none;
+}
+.header_display_none{
+    display: none;
+}
+
+.header_display_block{
+    display: block;
+}
+.alert{
+    display: none;
+}
+
+.help-block{
+    color:#B94A48;
+}
+
+#frm_my_event_post .participant-error{
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    border-radius: 4px;
+    border: 1px solid #B94A48;
+}
+
+.wrapper-video-youtube{
+    margin-bottom: 30px;
+}
+.wrapper-video-youtube .youtube-embed{
+    width: 450px;
+    height: 284px;
+}
+.margin20{
+    margin: 20px;
+}
+textarea#text_promote{
+    max-width: 95%;
+    width: 95%;
+    height: 100px;
+    max-height: 200px;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#text_promote_modal .product_image, #text_promote_modal .product_media {
+    width: 200px;
+    height: 150px;
+    text-align: center;
+}
+#text_promote_modal .product_image{
+    float: left;
+}
+#text_promote_modal .product_media{
+    float: right;
+    cursor: pointer;
+}
+#text_promote_modal .product_image img, #text_promote_modal .product_media img{
+    max-height: 150px;
+}
+.modal .error{
+    color: red;
+}
+.modal .success{
+    color: green;
+}
+.modal .loading, .modal .message{
+    float: left;
+}
+/* Like btn */
+.wrapper-like{
+    display: inline-block;
+    position: relative;
+    font-weight: normal;
+}
+.wrapper-icon-like{
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px !important;
+}
+.like-icon{
+    color: #005782;
+}
+.like-text{
+    font-weight: normal;
+    color: #005782;
+    font-size: 12px !important;
+}
+@media (max-width: 360px) {
+    .wrapper-video-youtube .youtube-embed{
+        width: 320px;
+        height: 284px;
+    }
+}
+@media (max-width: 320px) {
+    .wrapper-video-youtube .youtube-embed{
+        width: 280px;
+        height: 284px;
+    }
+}
+
+#loginModal {
+    height: auto;
+    min-width: 330px;
+    width: auto;
+}
+
+#loginModal .controls input {
+    width: 290px;
+}

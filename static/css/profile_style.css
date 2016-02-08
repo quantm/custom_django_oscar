@@ -1,0 +1,100 @@
+#profile-avatar{
+    border: 1px solid #ccc;
+    margin: -15px 0 15px 0;
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+}
+
+img.preview {
+    max-width: 400px;
+    max-height: 400px;
+    min-width: 200px;
+    min-height: 200px;
+    display: block;
+}
+
+#ImageUploadModal{
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    min-width: 650px;
+}
+
+#ImageUploadModal .modal-body{
+    max-height: 500px;
+}
+
+#ImageUploadModal .preview_upload{
+    float: left;
+    display: block;
+    border-right: 1px dashed #ccc;
+    max-width: 400px;
+    width: 100%;
+}
+
+#ImageUploadModal .preview_avatar{
+    float: right;
+}
+#ImageUploadModal #select-file, #ImageUploadModal .loading{
+    float: left;
+}
+#ImageUploadModal .loading{
+    margin: 5px 0 0 15px;
+    display: none;
+}
+#ImageUploadModal .loading img{
+    width: 20px;
+    height: 20px;
+}
+#ImageUploadModal .avatar_wrapper{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+#submit-upload{
+    display: none;
+}
+
+#ImageUploadModal .modal-footer {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+#ImageUploadModal .modal-footer form {
+    margin-bottom: 0;
+}
+
+#ImageUploadModal .modal-footer form .btn-primary {
+    margin-top: 0;
+}
+
+#ImageUploadModal .preview.insert-media form {
+    margin: 0;
+}
+
+#ImageUploadModal .preview.insert-media form  #select-file {
+    margin: 10px auto auto;
+    max-width: 374px;
+}
+
+#ImageUploadModal.insert-media .preview.insert-media .preview_avatar {
+    display: none;
+}
+
+#ImageUploadModal.insert-media .preview.insert-media .preview_upload {
+    border-right: none;
+}
+
+#ImageUploadModal.insert-media {
+    min-width: 430px;
+    width: 430px;
+}
+
+#ImageUploadModal .modal-footer form .message {
+    float: left;
+    color: red;
+}

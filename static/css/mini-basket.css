@@ -1,0 +1,32 @@
+.cart .my-gallery .dropdown-menu.pull-right li ul li {
+	padding: 2px 6px;
+}
+
+.cart .my-gallery .dropdown-menu.pull-right li ul li div.span5 {
+	margin-left: 0; 
+	width: 74%;
+}
+
+.cart .my-gallery .dropdown-menu.pull-right li ul li div .image-container {
+	margin-bottom:0; 
+	min-height: 60px;
+}
+
+.cart .my-gallery .dropdown-menu.pull-right li .form-actions {
+	margin: auto;
+    padding: 6px 6px 6px 10px;
+    -khtml-border-radius: 0px 0px 4px 4px;
+	-moz-border-radius: 0px 0px 4px 4px;
+	-webkit-border-radius: 0px 0px 4px 4px;
+	border-radius: 0px 0px 4px 4px;
+
+}
+.cart .my-gallery .dropdown-menu.pull-right li .basket_item {
+    max-height: 300px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.cart .my-gallery .dropdown-menu.pull-right li .my-list-empty {
+    padding: 10px;
+}

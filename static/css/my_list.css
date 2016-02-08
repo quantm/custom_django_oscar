@@ -1,0 +1,52 @@
+#my_list .product_pod {
+	float: left;
+}
+
+#my_list .product_pod .icons {
+	display: none;
+	position: absolute;
+	top: -4px;
+	right: 0px;
+	z-index: 1000;
+}
+
+#my_list .product_pod:hover .icons {
+	display: inline-block;
+}
+
+#my_list .product_pod .icons .icon-remove {
+	cursor: pointer;	
+}
+
+
+.my-list-pagination {
+    float: right;
+    display: inline-block;
+}
+
+.my-list-pagination ul {
+    float: left;
+}
+
+.my-list-pagination ul li {
+    float: left;
+}
+
+.my-list-pagination li.current {
+    line-height: 35px;
+    line-height: 35px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.my-list-pagination li.previous a,
+.my-list-pagination li.next a {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#my_list_profile .icons .icon-remove {
+    cursor: pointer;
+    padding: 5px 10px;
+}

@@ -1,0 +1,23 @@
+.mod.prod-mod {
+	display: inline-block;
+	width:100%;
+}
+
+#prod-masonry {
+	display: block;
+}
+
+#prod-masonry .prod-item {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#content_inner .span2.collection_name {
+    min-width: 360px;
+}
+
+.preview-form .btn.btn-primary {
+    margin-top: 0;
+    padding-bottom: 6px;
+    padding-top: 5px;
+}

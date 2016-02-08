@@ -1,0 +1,34 @@
+.user_hashtag_wrapper{
+        position: absolute;
+        display: none;
+        word-wrap: break-word;
+        box-sizing: border-box;
+        border: 1px solid rgb(220, 220, 220);
+        font-weight: normal;
+        width: 540px;
+        font-family: 'pt sans', arial, helvetica, sans-serif;
+        line-height: normal;
+        font-size: 14px;
+        margin: 0px;
+        padding: 9px;
+}
+
+.hashtag_link{
+        color: #0084B4;
+        margin-left: 3px;
+        height: auto;
+        text-decoration: none;
+        display: inline-block;
+        position: relative;
+        margin-top: -65px;
+}
+.mentions {
+    bottom: 0;
+    color:#0084B4;
+    left: 1px;
+    position: absolute;
+    right: 0;
+    top: 1px;
+    overflow: auto;
+    text-align: start;
+}

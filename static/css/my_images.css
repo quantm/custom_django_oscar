@@ -1,0 +1,41 @@
+.my_images a {
+    display: inline-block;
+    margin: 10px;
+}
+
+.my_images img {
+    display: inline-block;
+}
+
+.my_images label {
+    display: none;
+}
+
+#view_image_modal {
+    width: auto;
+    height: auto;
+}
+
+#view_image_modal .modal-body {
+    min-height: 500px;
+}
+
+#view_image_modal .modal-body .preview {
+    text-align: center;
+}
+
+.my_images .image-item:hover .icons {
+	display: inline-block;
+}
+
+.my_images .image-item .icons {
+	display: none;
+	position: absolute;
+	top: -10px;
+	right: 8px;
+	z-index: 1000;
+}
+
+.my_images .image-item .icons .icon-remove {
+	cursor: pointer;
+}

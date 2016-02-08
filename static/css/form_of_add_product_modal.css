@@ -1,0 +1,25 @@
+#ask_before_add_product_modal {
+	margin-bottom: 0;
+}
+
+#ask_before_add_product_modal > .control-group {
+	margin-bottom: 0;
+}
+
+#ask_before_add_product_modal > .control-group button.action{
+	margin-top: 0;
+}
+
+#ask_before_add_product_modal .modal-body {
+    padding-bottom: 0;
+}
+
+#ask_before_add_product_modal .modal-footer,
+#add_product_modal_message .modal-footer {
+    padding-bottom: 6px;
+    padding-top: 6px;
+}
+
+#ask_before_add_product_modal .modal-body #add_product_form {
+    margin-bottom: 0;
+}

@@ -1,0 +1,197 @@
+.textntags-wrapper {
+    float: left;
+}
+.my_wall_text_comment_input .control-group .controls .span img {
+    height: 32px;
+    width: 32px;
+}
+.my_wall_parent .my-wall-message-link {
+    margin-left: 0px;
+}
+.my_wall_wrapper .my_wall_parent img {
+    height: 32px;
+    width: 32px;
+}
+.my_wall_wrapper .my_wall_child img {
+    height: 32px;
+    width: 32px;
+    display: inline-block;
+    float: left;
+}
+
+.comment_input_temp .control-group .controls .textntags-wrapper .textarea_wall_post {
+    width: 411px;
+    height: 17px;
+    margin-left:40px;
+}
+
+.comment_input_temp img {
+    height: 32px;
+    width: 32px;
+}
+
+#frm_my_wall .controls textarea {
+    width: 85%;
+    height: 37px;
+}
+#frm_my_wall .control-group {
+    width: 417px;
+}
+#frm_my_wall .controls #my_wall_textarea {
+    width: 415px;
+    height: 37px;
+    resize: none;
+}
+
+.controls #my-wall-comment{
+    width: 408px;
+    height: 23px;
+}
+
+.clear_div_space {
+    clear: both;
+}
+
+.highlight {
+    color:#0084B4;
+}
+
+.my_wall_username {
+    font-weight: bold;
+    padding: 2px;
+}
+.textbox_focus {
+    margin-left: 40px;
+    width: 360px;
+}
+.my_wall_parent {
+    display:block;
+    width: 458px;
+}
+#my_wall_comment .controls .textntags-wrapper .textntags-beautifier div {
+    margin-left: 50px;
+    max-height: 37px;
+    height: 37px;
+    resize: none;
+}
+.textntags-wrapper .textntags-beautifier {
+    width: 400px;
+}
+#my_wall_comment .controls .textntags-wrapper .textntags-tag-list {
+    margin-left:0px;
+    top:32px;
+}
+#my_wall_comment .controls .textntags-wrapper #my-wall-comment {
+    height: 25px;
+}
+.my_wall_date_post {
+    margin-left:5px;
+}
+.my_wall_date_post div {
+    margin-left: 40px;
+}
+.my_wall_content {
+    margin-left: 40px;
+    text-align: justify;
+    word-wrap: break-word;
+    max-width: 415px;
+    margin-top:-5px;
+    padding-top: 1px;
+}
+.btn-delete-like {
+     margin-left: 40px;
+}
+
+.btn-delete-like a {
+    font-size: 13px;
+}
+.controls #my-wall-comment {
+    margin-left: 40px;
+}
+.my_wall_child {
+    display:block;
+    margin-left: 40px;
+}
+.my_wall_text_comment_input {
+    display:block;
+    margin-left: 40px;
+    width: 460px;
+}
+
+.display_avatar {
+    margin-left: 40px;
+}
+.textarea_width {
+    width: 400px;
+}
+.textarea_wall_post{
+    resize: none;
+    height: 26px;
+    max-height: 37px;
+    background-size: 37px;
+    width: 400px;
+}
+
+.wall_appended{
+    margin-left:40px;
+}
+
+.wall_parent_appended{
+    margin-left:40px;
+}
+
+.parent_child_appended {
+    height : 35px;
+}
+
+.my_wall_display_block{
+    display: block;
+}
+
+.my_wall_display_none {
+    display: none;
+}
+
+.my_wall_wrapper .my_wall_loading {
+    display: none;
+}
+.wall-button {
+    margin-top: 40px;
+    float:right;
+}
+.wall-button-submiting {
+    margin-left: 310px;
+    margin-top: -40px;
+}
+
+.avatar_wrapper {
+    margin-top: 1px;
+    position: absolute;
+    height: 32px;
+    width: 32px;
+    display: inline-block;
+    float: left;
+    display: none;
+    z-index:15;
+}
+
+.parent_avatar_wrapper {
+    margin-top: 1px;
+    position: absolute;
+    height: 32px;
+    width: 32px;
+    display: inline-block;
+    float: left;
+}
+
+.my_wall_text_comment_input img {
+    height: 32px;
+    width:32px;
+}
+.wrapper_textbox {
+    display: block;
+}
+
+.finished_hash_tag {
+    margin-top : 3px;
+}
