@@ -1,0 +1,57 @@
+{% extends "customer/base_view_profile.html" %}
+
+{% load url from future %}
+{% load product_tags i18n staticfiles thumbnail replace like_tags %}
+
+{% block title %}{{ object.name }}{% endblock %}
+{% block headertext %}{{ object.name }} {% render_like_btn object %}{% endblock %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_product_style.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_list.css" %}" />
+{% endblock %}
+
+{% block tabcontent %}
+    {% if items %}
+
+        <div id="my_list" class="mod prod-mod">
+            <input type="hidden" id="list_id" value="{{ object.id }}">
+            {% for item in items %}
+                {% with object=item.object %}
+                    <div class="product_pod" id="item_{{ item.id }}">
+                        {% thumbnail object.image 'x160' as thumb %}
+                            <div class="image_container">
+                                <img class="img-rounded" src="{% static thumb.url %}" alt="{{ object.title }}" />
+                            </div>
+                        {% endthumbnail %}
+                    </div>
+                {% endwith %}
+            {% endfor %}
+        </div>
+
+        <div class="total-page loading" data-total-page="{{products.paginator.num_pages}}"></div>
+
+        {# Using for show message when not already saved --------- #}
+        <div class="modal hide fade" id="message_confirm">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>{% trans "Confirmation" %}</h3>
+            </div>
+            <div class="modal-body">
+                <h2 class="question">{% trans "Are you sure?" %}</h2>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal" id="no">{% trans "No" %}</a>
+                <button id="yes-btn" class="btn btn-primary">{% trans "Yes" %}</button>
+            </div>
+        </div>
+
+    {% else %}
+        <p class="nonefound">{% trans "No products found." %}</p>
+    {% endif %}
+{% endblock tabcontent %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "js/collection/detail_my_list.js" %}"></script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% load i18n compress staticfiles thumbnail collection_tags %}
+<script type="text/javascript" src='{% static "js/social/my_event.js" %}'></script>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <h3>
+        {% trans header_text  %}
+        <!--<button data-toggle="modal" id="btn_edit_participant"  href="#form_edit_participant"  class="btn btn-large btn-primary display_none">{% trans "Edit Participants" %}</button>-->
+    </h3>
+</div>
+
+<div class="modal-body">
+    {% for user in selected_user %}
+        <label class="child" id="bootstrap_label_user_{{ user.user_obj_id }}">
+            <input class="{{ class }}" type="checkbox" id="{{modal_element}}_{{ user.user_obj_id }}" name="chk_{{type}}"  value="{{ user.user_obj_id }}"/>
+            <img title="{{ user.user_obj.get_full_name }}" class="comment_avatar" value ="{{ user.user_id }}"  src="{{ user.user_obj.get_avatar_src_full_url }}">
+        </label>
+    {% endfor %}
+</div>
+
+<div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">{% trans "Cancel" %}</a>
+    <button type="button" id="btn_{{ type }}" class="btn btn-primary">{% trans button_text %}</button>
+</div>
+
+
+
+

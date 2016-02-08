@@ -1,0 +1,68 @@
+{% load url from future %}
+{% load i18n staticfiles %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{{ page_title }}</title>
+	<link type="text/css" href="{% static "css/bookmarklet.css" %}" rel="stylesheet" />
+    {% include 'social/plugin/textntags.html' %}
+</head>
+<body>
+	<div align="center">
+		<div style="width:100%" class="contains">
+			<form id="product-ajax-form" action="{% url 'bookmark-let-post-link' %}" method="post" enctype="multipart/form-data">
+				<div class="header">
+					<span class="logo"><a href="#" class="logo"><img style="height:38px; width:auto" src="{{ STATIC_URL }}images/bookmark-let/oscar.png"></a></span>
+					<span></span>
+					<span class="close"><a href="#" class="close_box"><img src="{{ STATIC_URL }}images/bookmark-let/f-x.png"></a></span>
+				</div>
+				<div class="content">
+					<div class="form-content">
+						{% csrf_token %}
+						<div class="image-preview">
+							<img class="f-preview" name="previewer" id="f-picked-image" src="" alt="">
+							<div id="f-imgpick">
+								<a href="#" did="0" class="img-pick disabled ctrl-left"><img src="{{ STATIC_URL }}images/bookmark-let/f-left.png"></a>
+								<a href="#" did="1" class="img-pick disabled ctrl-right"><img src="{{ STATIC_URL }}images/bookmark-let/f-right.png"></a>
+							</div>
+							<input type="hidden" name="f-tag_url" id="f-tag_url" value="">
+                            <span class="caption-text" id="caption"></span>
+						</div>
+
+						{% for field in frm_bookmark_let %}
+							<div class="fieldWrapper field_{{ field.id_for_label }}" id="{{ field.id_for_label }}_wrapper">
+								<p class="field-errors">
+                                    {{ field.errors }}
+                                </p>
+								<div class="field-container">{{ field }}</div>
+							</div>
+						{% endfor %}
+					</div>
+					<div class="message-content" style="display:none">
+						<p><h1 class="message"></h1></p>
+						<p class="btn-finished"><a href="" class="f-button close" target="_blank"></a></p>
+                        <p class="btn-come-back"><span id="btn_come_back" class="f-button"></span></p>
+					</div>
+                    <div class="empty" style="display: none">
+                        <h3 class="empty-message">{{ empty.title }}</h3>
+                        {% for mes in empty.message %}
+                            <p class="empty-message">{% trans mes %}</p>
+                        {% endfor %}
+                    </div>
+				</div>
+				<div class="footer">
+					<p class="submit-button">
+						{% if user.is_authenticated %}
+							<input type="submit" id="submit" value="Send" />
+						{% else %}
+							<a target="_blank" href="/accounts/login?close" class="f-button close">Send</a>
+						{% endif %}
+					</p>
+					<div id="message"></div>
+				</div>
+			</form>
+		</div>
+	</div>
+    <script src="{% static "js/actions.js" %}"></script>
+</body>
+</html>

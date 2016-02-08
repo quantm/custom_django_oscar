@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load compress %}
+{% load promotion_tags %}
+
+{% block layout %}
+    {# Top-horizontal bar with account, notifictions, dashboard links #}
+    {% include "partials/nav_accounts.html" %}
+
+    {# Main content of page - other layout templates may override this block #}
+    {% block content_wrapper %}
+        <div class="container-fluid page">
+            <div class="page_inner">
+                {% block breadcrumbs %}{% endblock %}
+                {% block header %}
+                    <div class="page-header action">
+                        <h1>{% block headertext %}{% endblock %}</h1>
+                    </div>
+                {% endblock %}
+                {% include "partials/alert_messages.html" %}
+                {% block subnavigation %}{% endblock %}
+                <div class="content">
+                    {% block subheader %}{% endblock subheader %}
+
+                    {# Render promotions #}
+                    <div id="promotions">
+                        {% for promotion in promotions_page %}
+                            {% render_promotion promotion %}
+                        {% endfor %}
+                    </div>
+
+                    {# Div exists for AJAX updates to entire content section #}
+                    <div id="content_inner">{% block content %}{% endblock %}</div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% include "partials/footer.html" %}
+{% endblock %}
+
+{% block modal %}
+    {% include "collection/forms/options_add_product_to.html" %}
+{% endblock %}
+
+{% block extrascripts %}
+    {% include "partials/extrascripts.html" %}
+    {{ block.super }}
+
+    {# Together JS - Collaboration tool #}
+    <script type="application/javascript">
+        var TogetherJSConfig_autoStart = true,
+            TogetherJSConfig_dontShowClicks = true
+    </script>
+    <!--
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+    -->
+{% endblock %}

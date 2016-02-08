@@ -1,0 +1,58 @@
+{% extends "customer/baseaccountpage.html" %}
+
+{% load url from future %}
+{% load product_tags staticfiles i18n thumbnail %}
+
+{% block extrastyles %}
+    <!--
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_product_style.css" %}" />
+    -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/collection.css" %}" />
+{% endblock %}
+
+{% block tabcontent %}
+    {% if my_collection %}
+    <section>
+            <div class="mod prod-mod">
+                <ul id="prod-masonry">
+                    {% for item in my_collection %}
+                        <li class="prod-item">
+                            {% thumbnail item.thumb "x120" crop="center" as img %}
+                                <a href="{% url 'collection_view' %}?set_id={{ item.id }}" title="{{ item.name }}">
+                                    <img class="img-rounded" src="{% static img.url %}" alt="{{ item.name }}" />
+                                </a>
+                            {% endthumbnail %}
+                            <a href="{% url 'collection_view' %}?set_id={{ item.id }}" title="{{ item.name }}">
+                                <label>{{ item.name }}</label>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if paginator.num_pages > 1 %}
+                    <div>
+                        <ul class="pager">
+                           {% if my_collection.has_previous %}
+                           <li class="previous"><<a href="?page={{ my_collection.previous_page_number }}">{% trans "previous" %}</a></li>
+                           {% endif %}
+                            <li class="current">
+                            {% blocktrans with page_num=my_collection.number total_pages=my_collection.paginator.num_pages %}
+                                Page {{ page_num }} of {{ total_pages }}
+                            {% endblocktrans %}
+                            </li>
+                            {% if my_collection.has_next %}
+                                <li class="next"><a href="?page={{ my_collection.next_page_number }}">{% trans "previous" %}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    {% else %}
+        <p class="nonefound">{% trans "No collections found." %}</p>
+    {% endif %}
+{% endblock tabcontent %}
+
+{% block extrascripts %}
+    <!-- <script type="text/javascript" src="{% static "js/my_js_function.js" %}"></script> -->
+    <script type="text/javascript" src="{% static "js/masonry.pkgd.min.js" %}"></script>
+{% endblock %}

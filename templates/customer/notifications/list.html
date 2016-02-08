@@ -1,0 +1,125 @@
+{% extends "customer/baseaccountpage.html" %}
+{% load i18n %}
+{% load url from future %}
+{% load staticfiles %}
+
+{% block tabcontent %}
+<script type="text/javascript">
+    function view_collection(id,type){
+        var url
+		switch(type){
+            case 1:
+				url ="{% url 'collection_view' %}?set_id="+id
+				window.open(url,"_parent")
+                break;
+				
+			case 2:
+				url ="{% url 'collection_design' %}?set_id="+id
+				window.open(url,"_parent")
+                break;
+        }
+
+    }
+</script>
+    <ul class="nav nav-tabs">
+        <li class="{% if list_type == 'inbox' %}active{% endif %}"><a href="{% url 'customer:notifications-inbox' %}">Inbox</a></li>
+        <li class="{% if list_type == 'archive' %}active{% endif %}"><a href="{% url 'customer:notifications-archive' %}">Archive</a></li>
+    </ul>
+
+    {% if notifications %}
+        {% include "partials/pagination.html" %}
+
+        <form action="{% url 'customer:notifications-update' %}" method="post" name="frm_notification">
+            {% csrf_token %}
+            <table class="table table-striped table-bordered">
+                <tbody>
+                    {% for notification in notifications %}
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="selected_notification" 
+                                value="{{ notification.id }}"/>
+                            </td>
+                            <td>
+                                {% if notification.is_new %}
+                                    <i class="icon-envelope"></i>
+                                {% else %}
+                                    <i class="icon-envelope"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ notification.subject|safe }} <br/>
+                                <em>{{ notification.date_sent }}</em> 
+                            </td>
+                            <td>
+
+                            {% if notification.type > 0 and notification.type <= 9 %}
+                                <span class="btn btn-info btn-small">
+                                    {% if notification.type == 1 %}
+                                        <span onclick="view_collection({{ notification.object_id }},{{ share }})">{% trans 'View Collection' %}</span>
+                                    {% endif %}
+                                    {% if notification.type == 2 %}
+                                        <span onclick="view_collection({{ notification.object_id }},{{ invite }})">{% trans 'Edit Collection' %}</span>
+                                    {% endif %}
+                                </span>
+                            {% elif notification.type >= 10 and notification.type <= 19 %}
+                                <a href="/accounts/profile/{{ notification.object_id }}" class="btn btn-info btn-small" target="_blank">{% trans 'View profile' %}</a>
+                                {% if notification.type == 10 and notification.sender_id %}
+                                        <div class="btn-group">
+                                        <a class="btn btn-small btn-success dropdown-toggle" data-toggle="dropdown" href="#">{% trans 'Response' %}<span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a id="accept_request" href="#" data-request-friend-id="{{ notification.sender_id }}">{% trans 'Accept' %}</a></li>
+                                                <li><a id="delete_request" href="#" data-request-friend-id="{{ notification.sender_id }}">{% trans 'Delete request' %}</a></li>
+                                            </ul>
+                                        </div>
+                                {% endif %}
+                            {% elif notification.type >= 50 and notification.type <= 55 %}
+                                {% if notification.type == 51 and notification.sender_id %}
+                                        <a class="btn btn-info btn-small" href="{% url 'detail-events' notification.object_id %}">{% trans 'View Event' %}</a>
+                                {% endif %}
+                            {% elif notification.type >= 60 and notification.type <= 65 %}
+                                {% if notification.type == 60 and notification.sender_id %}
+                                        <a class="btn btn-info btn-small" href="{% url 'my-wall-post-detail' notification.object_id %}">{% trans 'View Post' %}</a>
+                                {% endif %}
+                            {% elif notification.type >= 40 and notification.type <= 49 %}
+                                {% if notification.type == 40 and notification.sender_id %}
+                                        <a class="btn btn-info btn-small" href="{% url 'my-wall-post-detail' notification.object_id %}">{% trans 'View Mention' %}</a>
+                                {% endif %}
+                            {% else %}
+                                {% if notification.body %}
+                                    <a href="{% url 'customer:notifications-detail' notification.pk %}" class="btn btn-info btn-small">{% trans 'View' %}</a>
+                                {% endif %}
+                            {% endif %}
+                                {% if list_type == 'inbox' %}
+                                    <a class="btn btn-success btn-small" href="#" data-behaviours="archive">{% trans 'Archive' %}</a>
+                                {% endif %}
+                                <a class="btn btn-danger btn-small "href="#" data-behaviours="delete">{% trans 'Delete' %}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% trans "With selected items:" %} 
+            {% if list_type == 'inbox' %}
+                <button type="submit" class="btn btn-success" name="action" value="archive">{% trans "Archive" %}</button>
+            {% endif %}
+            <button type="submit" class="btn btn-danger" name="action" value="delete">{% trans "Delete" %}</button>
+        </form>
+
+        {% include "partials/pagination.html" %}
+
+    {% else %}
+        <p>{% trans "There are no notifications to display." %}</p>
+    {% endif %}
+
+{% endblock tabcontent %}
+
+{% block onbodyload %}
+    {{ block.super }}
+    oscar.notifications.init();
+{% endblock %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "js/friendship_function.js" %}"></script>
+{% endblock %}
+

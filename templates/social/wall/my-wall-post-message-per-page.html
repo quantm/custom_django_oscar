@@ -1,0 +1,24 @@
+{% load i18n staticfiles  hash_tags collection_tags %}
+{% for wall_parent in wall_post_detail %}
+          <div id="my-wall-post-{{ wall_parent.id }}" class="{% if wall_parent.message_id %}my_wall_child{% else %}my_wall_parent{% endif %}">
+            <img src="{{ wall_parent.user.get_avatar_src_full_url }}"/>
+            <span class="my_wall_username">{{ wall_parent.user.get_full_name }}</span>
+            <span class="my_wall_date_post">
+                {{ wall_parent.create_date | date:'SHORT_DATE_FORMAT' }} at {{ wall_parent.create_date | date:'P' }}
+            </span>
+            <div class="my_wall_content">
+            {% if 'http'|match:wall_parent.content or '@'|match:wall_parent.content or '#'|match:wall_parent.content %}
+                <span class="my-wall-message-link">
+                    {% render_wall_post wall_parent.content %}
+                </span>
+            {% else %}
+                {{ wall_parent.content }}
+            {%endif%}
+            </div>
+            <div class="btn-delete-like">
+                <a data-id="{{ wall_parent.id }}" id="social-message-parent" data-toggle="modal"  href="#my_wall_delete_message">{% if wall_parent.user_id == request.user.id %}Delete{% endif %}</a>
+                <a href="">Like</a>
+                <input type="hidden" class="my-wall-obj-child-parent" id="my_wall_obj_message_parent_id">
+            </div>
+         </div>
+{% endfor %}

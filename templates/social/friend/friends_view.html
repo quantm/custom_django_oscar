@@ -1,0 +1,45 @@
+{% extends "customer/base_view_profile.html" %}
+
+{% load url from future %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_product_style.css" %}" />
+{% endblock %}
+
+{% block tabcontent %}
+    {% if friends %}
+        <section>
+            <div class="mod prod-mod">
+                <ul id="prod-masonry">
+                    {% for friend in friends %}
+                        <li class="prod-item">
+                            <div class="product_pod">
+                                <div class="image_container">
+                                    <a href="/accounts/profile/{{ friend.user_obj.id }}" class="prod-link" osc-logged-in="1">
+                                        <div class="prod-info">
+                                            <h3 class="title">{{ friend.user_obj.get_full_name }}</h3>
+                                        </div>
+                                        <img src="{{ friend.user_obj.get_avatar_src_full_url }}" alt="" class="thumbnail" width="185">
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="total-page loading" data-total-page="{{friends.paginator.num_pages}}"></div>
+            </div>
+        </section>
+    {% else %}
+        <p class="nonefound">{% trans "No Friend found." %}</p>
+    {% endif %}
+{% endblock tabcontent %}
+
+{% block extrascripts %}
+    {{ block.super }}
+
+    <script type="text/javascript" src="{% static "js/my_js_function.js" %}?v=100"></script>
+    <script type="text/javascript" src="{% static "js/masonry.pkgd.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/imagesloaded.pkgd.min.js" %}"></script>
+{% endblock %}

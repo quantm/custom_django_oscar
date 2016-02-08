@@ -1,0 +1,17 @@
+{% load url from future %}
+{% load staticfiles i18n %}
+
+<div id="normal_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 class="normal-modal-title">{% trans 'Modal header' %}</h3>
+    </div>
+    <div class="modal-body">
+        <p>{% trans 'Loading…' %}</p>
+    </div>
+    <div class="modal-footer">
+        <div class="loading hide"><img src="{% static "images/fb-loading.gif" %}"></div>
+        <div id="message" class="hide" style="float: left">{% trans "Text save success" %}</div>
+        <button id="normal_modal_btn_ok" class="btn btn-primary">{% trans 'OK' %}</button>
+    </div>
+</div>

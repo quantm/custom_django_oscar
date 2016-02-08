@@ -1,0 +1,20 @@
+{% load i18n compress staticfiles hash_tags collection_tags like_tags %}
+{% for child_node in child  %}
+    <div class="my_wall_child" id="my-wall-post-{{ child_node.id }}">
+        <img src="{{ avatar }}">
+            <span class="my_wall_username">{{ full_name }}</span>
+            <span class="my_wall_date_post">{{ child_node.create_date | date:'SHORT_DATE_FORMAT' }} {% trans 'at' %} {{ child_node.create_date | time:'P'}}</span>
+        <div id="appended_child_{{ child_node.id }}" class="my_wall_content ">
+            {% if 'http'|match:child_node.content or '@'|match:child_node.content or '#'|match:child_node.content %}
+                {% render_wall_post child_node.content %}
+            {% else %}
+                {{ child_node.content }}
+            {% endif %}
+        </div>
+        <div class="btn-delete-like">
+            <a href="#my_wall_delete_message" data-id="{{ child_node.id }}" id="social-message-child" data-toggle="modal"> {% trans 'Delete' %} </a>
+            {% render_like_btn child_node %}
+        </div>
+    </div>
+    <input type="hidden" value="appended_child_{{ child_node.id }}" id="appended_child">
+{% endfor %}

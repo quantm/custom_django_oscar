@@ -1,0 +1,28 @@
+{% load i18n compress staticfiles thumbnail %}
+
+<script src="{% static 'js/collection/comment.js' %}"></script>
+{% for comment in comment_list %}
+    <div id="collection_comment_{{ comment.id }}" class="collection_comment">
+        <img class="comment_avatar" src="{% with avatar=comment.user.get_avatar_src_full_url %}{{ avatar }}{% endwith %}" alt="{{ comment.user_comment }}"/>
+        <span class="comment_username">
+            <a style="font-size: 12px"  href="">{{comment.user_comment}}</a>
+            <a class="btn_delete_comment" id="btn_delete_{{ comment.id }}" data-toggle="modal" href="#form_delete_comment">Delete</a>
+        </span>
+        <div id="comment_text_{{ comment.id }}" class="comment_text">
+            {{comment.content}}
+        </div>
+        <hr>
+    </div>
+{% endfor %}
+
+<div class="modal hide fade" id="form_delete_comment">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{% trans "Do you want to delete this comment?" %}</h3>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">{% trans "Cancel" %}</a>
+        <button type="button" id="btn_delete_comment"  class="btn btn-primary">{% trans "Delete" %}</button>
+    </div>
+</div>
+

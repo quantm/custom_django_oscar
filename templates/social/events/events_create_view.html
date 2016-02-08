@@ -1,0 +1,111 @@
+{% extends "customer/baseaccountpage.html" %}
+{% load i18n staticfiles collection_tags hash_tags %}
+{% load url from future %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'promotions:home' %}">{% trans 'Home' %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="{% url 'customer:summary' %}">{% trans 'Account' %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="{% url 'my-events' %}">{% trans 'My Events' %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">
+            {% if update %}
+            {% for updates in update %}
+                {{ updates.name }}
+            {% endfor %}
+            {% else %}
+                {% trans "Create" %}
+            {% endif %}
+        </li>
+    </ul>
+{% endblock %}
+
+{% block tabcontent %}
+    <link rel="stylesheet" type="text/css" href='{% static "css/datepicker.css" %}' />
+    <form action="{% url 'save_event' %}" id="frm_my_event_post" method="post" data-behaviours="lock" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" id="my_event_img_url" value ="{{ static_url }}">
+    <input type="hidden" id="url_get_user_participant" value = "{% url 'my_event_user' %}" />
+    <input type="hidden" name="my_event_selected_user_array[]" id="my_event_selected_user_array"/>
+    <input type="hidden" id="my_event_participant_quantity" name="my_event_participant_quantity" value="0"/>
+        <input type="hidden" id="log_id" name ="log_id" value="{{ log_id }}"/>
+    {% if update %}
+        <input type="hidden" id="check_if_update" name="check_if_update" value="1">
+        {% for updates in update %}
+            <input type="hidden" name="update_name" id="update_name" value="{{ updates.name }}"/>
+            <input type="hidden" name="update_date_created" id="update_date_created" value="{{ updates.date_created | date:'Y-m-j' }}"/>
+            <input type="hidden" name="update_description" id="update_description" value="{{ updates.description }}"/>
+            <input type="hidden" id="id_update" name="id_update" value="{{ updates.id }}">
+        {% endfor %}
+    {% endif %}
+    <!--
+    <div class="alert alert-error hide" id="alert alert-error">
+        <strong>Oops! We found some errors</strong> - please check the error messages below and try again
+    </div>
+    -->
+    {% for field in fields %}
+        <div  id="{{ field.auto_id }}_error" class="control-group">
+            <label for="{{ field.auto_id }}" class="control-label{% if field.field.required %} required{% endif %}">
+                    {{ field.label|safe }}
+                    {% if field.field.required %} <span>*</span>{% endif %}
+            </label>
+            <div class="controls">{{ field }}</div>
+            <span id="{{ field.auto_id }}_error_text" class="help-block"><i class="icon-exclamation-sign"></i></span>
+         </div>
+    {% endfor %}
+{% if request.user.id == owner or is_new %}
+        <div  {% if is_new and is_save %}class="modal hide fade"{% endif %}{% if is_update%}{% endif %} id="participant_error">{% render_user_template user_array "my_event_select_participant" "/my-event/save/" header_text "Select Participant" user_chk_array "selected_db_update" "chk_my_event_add_create" %}</div>
+        {% if is_new or not is_update %}
+        <div  class="header_display_none" id="participant_create_participant_selected">{% render_user_template user_array "my_event_select_participant" "/my-event/save/" "Participant" "Select Participant" user_chk_array "selected_db_update" "" %}</div>
+        {% endif %}
+ {% endif %}
+    <span id="participant_error_text" class="help-block"><i class="icon-exclamation-sign"></i></span>
+{% if  is_update %}
+    {% if request.user.id == owner or is_new %}
+        <div id="my_event_div_selected_user"></div>
+            {% if not is_new %}
+                <script type="text/javascript">
+                    update_hide_checkbox({{ user_chk_array }},"update")
+                    set_check_box_stat({{user_chk_array}})
+                </script>
+            {% endif %}
+    {% endif %}
+        <div class="form-actions">
+        {% if request.user.id == owner or is_new %}
+            {% if is_new or is_update %}
+            <button class="btn btn-large btn-primary" data-toggle="modal" {% if is_new %} href="#participant_error" id="my_event_select_participant_modal"{% else %}id="btn_edit_participant"  href="#form_edit_participant"{% endif %} type="button">
+                {% trans "Edit Participant" %}
+            </button>
+            {% endif %}
+        {% endif %}
+            <button class="btn btn-large btn-primary" type="button"
+            {% if is_new %}id="btn_new_event"{% else %}id="btn_event_update"{% endif %}>
+                {% trans "Save" %}
+            </button>
+            {% trans "or" %} <a href="#" onclick="history.go(-1);return false" >{% trans "cancel" %}</a>.
+        </div>
+{% else %}
+   <script type="text/javascript" src='{% static "js/social/extra_script.js" %}'></script>
+   <script type="text/javascript">update_hide_checkbox({{ user_array_update }},"details")</script>
+   <!--<a href="#" class="btn btn-large btn-primary" onclick="history.go(-1);return false" >{% trans "My Event List" %}</a>-->
+   {% endif %}
+   <div class="modal hide fade" id="form_edit_participant">
+            {% render_user_template user_array_friend "event_participant" "/my-event/save/" "Please choose participant for your event" "Update Participant" user_chk_array "selected_edit_update" "" %}
+   </div>
+</form>
+<div class="modal hide fade" id="my_event_update_message_permission">
+      {% render_delete_permission %}
+</div>
+{% endblock tabcontent %}
+{% block extrascripts %}
+            <script id="test" type="text/javascript" src='{% static "js/social/social.js" %}'></script>
+            <script type="text/javascript" src='{% static "js/bootstrap/bootstrap-datepicker.js" %}'></script>
+{% endblock %}

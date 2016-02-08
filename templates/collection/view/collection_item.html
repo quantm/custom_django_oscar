@@ -1,0 +1,20 @@
+{% load thumbnail staticfiles get_item %}
+
+<div {% if item.type == 'product' %}open-tooltip="1" data-toggle="popover" data-container="body"{% endif %}
+     id="loaded_design_{{ item.id }}"
+     class="{{item.class_name}}"
+     style="{{ item.style }}">
+
+    {% if item.type == 'text' %}
+        <div class="text-editable">{{ item.content|safe }}</div>
+    {% elif item.type == 'video' %}
+        {% render_video_player item %}
+    {% else %}
+        {% if item.type == 'product' %}
+            {% render_tooltip_object item %}
+        {% endif %}
+        <div  class="image_collection">
+            {% render_collection_item_with_tooltip item  %}
+        </div>
+    {% endif %}
+</div>

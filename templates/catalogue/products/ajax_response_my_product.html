@@ -1,0 +1,25 @@
+{% load url from future %}
+{% load i18n staticfiles thumbnail %}
+
+{% if my_product_list %}
+    {% for my_product in my_product_list %}
+        <li class="prod-item">
+            <div class="product_pod">
+                {% block product_image %}
+                    <div class="image_container">
+                        {% with image=my_product.product.primary_image %}
+                            {% thumbnail image.original "480x480" upscale=False as thumb %}
+                            <a href="{{ my_product.product.get_absolute_url }}" class="prod-link" osc-logged-in="{% if user.is_authenticated %}1{% endif %}">
+                                <div class="prod-info">
+                                    <h3 class="title">{{ my_product.product.get_title|truncatewords:4 }}</h3>
+                                </div>
+                                <img src="{% static thumb.url %}" alt="{{ my_product.product.get_title }}" class="thumbnail">
+                            </a>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    </div>
+                {% endblock %}
+            </div>
+        </li>
+    {% endfor %}
+{% endif %}

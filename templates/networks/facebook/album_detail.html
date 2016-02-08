@@ -1,0 +1,12 @@
+{% load i18n %}
+
+{% if auth.status == True %}
+    {% for item in result %}
+        {% include 'networks/image_item.html' %}
+    {% endfor %}
+    <input type="hidden" name="hid_album" value="{{ album_id }}" />
+{% else %}
+    <div class="">
+        <p class="text-error text-center"><i class="icon-warning-sign"></i> {{ auth.message }}</p>
+    </div>
+{% endif %}

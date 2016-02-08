@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% load url from future %}
+{% load basket_tags promotion_tags category_tags product_tags i18n staticfiles %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_product_style.css" %}" />
+{% endblock %}
+
+{% block title %}
+    {{ collection_preview.name }}
+{% endblock %}
+
+{% block headertext %}
+    {{ collection_preview.name }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url "promotions:home" %}">{% trans "Home" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            {% trans "Preview Collection" %}
+            <span class="divider">/</span>
+        </li>
+        <li class="active">{{ collection_preview.name }}</li>
+    </ul>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <link href="{% static "css/preview_collection.css" %}" type="text/css" media="screen" rel="stylesheet"/>
+    <form action="{% url 'gallery_save_into_collection' %}" method="post" enctype="multipart/form-data" id="collection_form" class="preview-form">
+        {% csrf_token %}
+        <div class="input-prepend input-append">
+            <div class="btn-group">
+                <span class="add-on">{% trans "Collection name: " %}</span>
+                <input class="span2 collection_name" name="new_name" id="prependedInput" type="text" value="{{ collection_preview.name }}">
+                <input class="btn btn-primary" type="submit" id="submit" name="submit" value="{% trans "Gallery" %}">
+            </div>
+            <input type="hidden" name="collection_id" id="collection_id" value="{{ collection_preview.pk }}">
+        </div>
+
+        {% if products %}
+            <div class="mod prod-mod">
+                <ul id="prod-masonry">
+                    {% for product in products %}
+                        <li class="prod-item">{% render_product product %}</li>
+                    {% endfor %}
+                </ul>
+                <div class="total-page loading" data-total-page="{{paginator.num_pages}}"></div>
+                <div class="text-left">
+
+                </div>
+            </div>
+        {% else %}
+            <p class="nonefound">{% trans "No products found." %}</p>
+        {% endif %}
+    </form>
+{% endblock content %}

@@ -1,0 +1,271 @@
+{% extends "layout.html" %}
+
+{% load url from future %}
+{% load history_tags currency_filters reviews_tags staticfiles product_tags i18n stockrecord_tags thumbnail display_tags %}
+
+
+{% block extrastyles %}
+    {{ block.super }}
+    <!-- Colorbox (a lightbox plugin) for image galleries -->
+    <link rel="stylesheet" href="{% static "js/colorbox/colorbox.css" %}" type="text/css" media="screen" charset="utf-8"/>
+{% endblock %}
+
+{% block title %}
+    {{ product.title }} | {{ block.super }}
+{% endblock %}
+
+{% block description %}
+    {{ product.description }}
+{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+	<li>
+		<a href="{% url 'promotions:home' %}">{% trans "Home" %}</a>
+        <span class="divider">/</span>
+    </li>
+    {% with category=product.categories.all.0 %}
+        {% for c in category.get_ancestors %}
+        <li>
+            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+            <span class="divider">/</span>
+        </li>
+        {% endfor %}
+        <li class="active">{{ product.title }}</li>
+
+        {% get_back_button as backbutton %}
+        {% if backbutton %}
+            <li class="pull-right">
+                <a href="{{ backbutton.url }}">
+                    <i class="icon-arrow-left"></i> {{ backbutton.title }}
+                </a>
+            </li>
+        {% endif %}
+    {% endwith %}
+</ul>
+{% endblock %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+
+<article class="product_page"><!-- Start of product page -->
+
+    <div class="row-fluid">
+
+        {% block product_gallery %}
+        <div class="span6">
+            {% include "catalogue/partials/gallery.html" %}
+        </div>
+        {% endblock %}
+
+        {% block media_gallery %}{% endblock %}
+
+        {% block product_main %}
+        <div class="span6">
+            {% comment %} 
+            This is a but clunky here.  Better to have some kind of JS-driven dashboard menu that 
+            pops out when clicked.  A bit like the Django-Debug-Toolbar button
+            {% endcomment %}
+            <h1>{{ product.get_title }}</h1>
+
+            {% block product_stock_record %}
+                {% include "catalogue/partials/stock_record.html" with verbose=1 %}
+            {% endblock %}
+
+            {% iffeature "reviews" %}
+                {% if product.rating != None %}
+                <h4 class="star-rating {{ product.rating|as_stars }}">
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+
+                    <small><a href="{% url 'catalogue:reviews-list' product_slug=product.slug product_pk=product.id %}">
+                            {% blocktrans count reviews|length as num_reviews %}
+                            1 custom review
+                            {% plural %}
+                            {{ num_reviews }} customer reviews
+                            {% endblocktrans %}
+                    </a></small>
+                    &nbsp;
+                {% else %}
+                    <h4>
+                {% endif %}
+                {% if not product|has_review_by:user %}
+                    <a id="write_review" href="{% url 'catalogue:reviews-add' product_slug=product.slug product_pk=product.id %}#addreview" class="btn btn-success btn-small">
+                        {% trans "Write a review" %}
+                    </a>
+                {% endif %}
+                </h4>
+            {% endiffeature %}
+
+            <hr/>
+
+            {% block product_basket_form %}
+                {% include "catalogue/partials/add_to_basket_form.html" %}
+            {% endblock %}
+
+        </div><!-- /span6 -->
+        {% endblock %}
+
+        {% block media_user_avatar %}{% endblock %}
+
+        {% block promote_text %}{% endblock %}
+    </div><!-- /row-fluid -->
+
+    {% block product_description %}
+        {% if product.description %}
+        <div id="product_description" class="sub-header">
+            <h2>{% trans "Product Description" %}</h2>
+        </div>
+        <p id ="product_description_hash_tag_mention">{{ product.description|safe }}</p>
+        {% endif %}
+    {% endblock %}
+
+    {% block product_info %}
+        {% block edit_this_product %}
+        {% if user.is_authenticated and user.is_staff %}
+            <a class="pull-right hidden-phone" href="{% url 'dashboard:catalogue-product' pk=product.id %}"><small><i class="icon-edit"></i> {% trans "Edit this product" %}</small></a>
+        {% endif %}
+        {% endblock %}
+    <div class="sub-header">
+        <h2>{% trans "Product Information" %}</h2>
+    </div>
+    <table class="table table-striped table-condensed">
+        {% if product.upc %}
+        <tr>
+            <th>{% trans "UPC" %}</th><td>{{ product.upc }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <th>{% trans "Product class" %}</th><td>{{ product.get_product_class.name }}</td>
+        </tr>
+
+        {% session_strategy request product as session %}
+        {% if session.price.exists %}
+            <tr>
+                <th>{% trans "Price (excl. tax)" %}</th><td>{{ session.price.excl_tax|currency:session.price.currency }}</td>
+            </tr>
+            {% if session.price.is_tax_known %}
+                <tr>
+                    <th>{% trans "Price (incl. tax)" %}</th><td>{{ session.price.incl_tax|currency:session.price.currency }}</td>
+                </tr>
+                <tr>
+                    <th>{% trans "Tax" %}</th><td>{{ session.price.tax|currency:session.price.currency }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <th>{% trans "Availability" %}</th>
+                <td>{{ session.availability.message }}</td>
+            </tr>
+        {% endif %}
+        {% for av in product.attribute_values.all %}
+        <tr>
+            <th>{{ av.attribute.name }}</th>
+            <td>{{ av.value }}</td>
+        </tr>
+        {% endfor %}
+        {% iffeature "reviews" %}
+            <tr>
+                <th>{% trans "Num reviews" %}</th>
+                <td>{{ reviews.count|default:0 }}</td>
+            </tr>
+        {% endiffeature %}
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    {% endblock %}
+
+    {% iffeature "reviews" %}
+        {% block product_review %}
+        <section>
+            <div id="reviews" class="sub-header">
+                {% if reviews|length > 3 %}
+                    <a href="{% url 'catalogue:reviews-list' product_slug=product.slug product_pk=product.id %}" class="btn pull-right">{% trans "See all reviews" %}</a>
+                {% endif %}
+                <h2>{% trans "Customer Reviews" %}</h2>
+            </div>
+
+            {% if not reviews %}
+                <p>
+                    {% trans "This product does not have any reviews yet" %} -
+                    <a href="{% url 'catalogue:reviews-add' product_slug=product.slug product_pk=product.id %}#addreview">{% trans "be the first to write one" %}</a>.
+                </p>
+            {% else %}
+                <ol class="unstyled review-list">
+                    {% for review in reviews|slice:":3" %}
+                        <li>
+                        {% include 'catalogue/partials/review.html' %}
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% endif %}
+        </section>
+        {% endblock product_review %}
+    {% endiffeature %}
+
+    {% if product.related_products.count %}
+        <div class="sub-header">
+            <h2>{% trans "Related items" %}</h2>
+        </div>
+        <div class="es-carousel-wrapper">
+            <div class="es-carousel">
+                <ul>
+                    {% for product in product.related_products.all %}
+                    <li>
+                        {% render_product product %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if product.recommended_products.count %}
+        <div class="sub-header">
+            <h2>{% trans "Recommended items" %}</h2>
+        </div>
+        <div class="es-carousel-wrapper">
+            <div class="es-carousel">
+                <ul>
+                    {% for product in product.recommended_products.all %}
+                    <li>
+                        {% render_product product %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    {% block recently_viewed_products %}
+        {% recently_viewed_products %}
+    {% endblock %}
+
+</article><!-- End of product page -->
+{% endblock content %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <!-- Responsive gallery js -->
+    <script src="{% static "js/colorbox/jquery.colorbox-min.js" %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static "js/responsivegallery/jquery.tmpl.min.js" %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static "js/responsivegallery/gallery.js" %}" type="text/javascript" charset="utf-8"></script>
+    <script  type="text/javascript" src="{% static "js/set_mention_hashtag_link.js" %}" charset="utf-8"></script>
+    <script>set_mention_hashtag_link("product_description_hash_tag_mention")</script>
+{% endblock %}
+
+
+{% block facebook_product_meta %}
+    <meta property="og:type"        content="product" />
+    <meta property="og:title"       content="{{ product.title }}" />
+    <meta property="og:description" content="{{ product.description|safe }}"/>
+	<meta property="og:url"         content="{{ BASE_URL }}{% url 'add-this-product' %}" />
+	<meta property="og:image"       content="{{ BASE_URL }}{% with image=product.primary_image %}{% thumbnail image.none_watermark "800" upscale=False as thumb %}{% static thumb.url %}{% endthumbnail %}{% endwith %}" />
+    {{ block.super }}
+{% endblock %}

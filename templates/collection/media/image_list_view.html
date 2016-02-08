@@ -1,0 +1,41 @@
+{% extends "customer/base_view_profile.html" %}
+
+{% load url from future %}
+{% load i18n staticfiles thumbnail %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_images.css" %}" />
+{% endblock %}
+
+{% block tabcontent %}
+    {% if object_list|length > 0 %}
+        <ul class="unstyled my_images" id="my_images">
+            {% for image_obj in object_list %}
+                <li id="image_{{ image_obj.id }}" class="image-item">
+                    <a class="image-href" data-href="{{ image_obj.image.url }}" href="{% thumbnail image_obj.image "x500" as preview %}{% static preview.url %}{% endthumbnail %}" title="{{ image_obj.title }}">
+                        {% thumbnail image_obj.image "x180" as img %}
+                            <img class="img-rounded" src="{% static img.url %}" alt="{{ image_obj.title }}" data-id="{{ image_obj.id }}">
+                        {% endthumbnail %}
+                    </a>
+                    <label>{{ image_obj.title }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+        <div data-total-page="{{paginator.num_pages}}" class="total-page loading"></div>
+        <input type="hidden" id="url_for_list_image" value="{% url 'my-images' %}">
+    {% else %}
+        <p>{% trans 'No image found' %}</p>
+    {% endif %}
+{% endblock tabcontent %}
+
+{% block modal %}
+    {% include "collection/media/view_image_in_modal.html" %}
+{% endblock %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "js/masonry.pkgd.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/imagesloaded.pkgd.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/my_images.js" %}?v=100"></script>
+    <script type="text/javascript" src="{% static "js/webtoolkit.base64.js" %}"></script>
+{% endblock %}

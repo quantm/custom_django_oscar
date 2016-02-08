@@ -1,0 +1,115 @@
+{% load i18n %}
+<div id="my_videos_toolbar" class="control-group add-media-header">
+
+    <div class="btn-group menu-buttons">
+        <button id="back_my_videos" class="btn btn-small" disabled="disabled">
+            <i class="icon-home"></i> {% trans "My Videos" %}
+        </button>
+        <button host="youtube" id="browse_youtube" data-form="youtube_form" class="btn btn-small">
+            <i class="icon-search"></i> {% trans "Youtube" %}
+        </button>
+        <button host="vine" id="browse_vine" data-form="vine_form" class="btn btn-small">
+            <i class="icon-search"></i> {% trans "Vine" %}
+        </button>
+        <button host="" id="make_video" data-form="make_video_frm" class="btn btn-small">
+            <i class="icon-camera"></i> {% trans "Make a Video" %}
+        </button>
+    </div>
+
+    <div class="data-form">
+
+        <div id="youtube_form" bnt-id="browse_youtube" class="control-group search_form youtube_form hide">
+
+            <div id="insert_video_form" class="control-group">
+                <input class="youtube-url" id="youtube_video_url" type="text"
+                    placeholder="{% trans "Add a video using the URL from Youtube" %}"
+                    message="{% trans "Youtube's URL incorrect or video deleted" %}">
+
+                <button id="add_video_from_url" class="btn btn-primary btn-small video submit" type="button">
+                    {% trans "Add" %}
+                </button>
+            </div>
+
+            <div id="search_video_form" class="control-group">
+                <input class="keywords" id="keywords" type="text"
+                    placeholder="{% trans "The keywords" %}"
+                    message="{% trans "The keyword invalid or empty." %}"
+                    value="{% if youtube_keywords %}{{ youtube_keywords }}{% endif %}">
+                <button id="search_videos" class="btn btn-primary btn-small video submit" type="button">
+                    {% trans "Search" %}
+                </button>
+            </div>
+        </div>
+
+        <div id="vine_form" class="control-group search_form vine_form hide">
+            <input class="text-search keywords" id="txtSearch" type="text"
+                placeholder="{% trans "The Tag" %}"
+                message="{% trans "The keyword invalid or empty." %}"
+                value="">
+            <button id="btnSearch" class="btn btn-search btn-primary btn-small video submit" type="button">
+                {% trans "Search" %}
+            </button>
+        </div>
+
+        <div id="make_video_frm" class="control-group search_form youtube_form hide">
+            <input class="input-small text-search" id="y_title" type="text"
+                   placeholder="{% trans "Video's title" %}"
+                   message="{% trans "This video is currently being processed" %}"
+                   value="">
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+<div id="my_images_toolbar" class="control-group add-media-header hide">
+    <div class="btn-group menu-buttons">
+        <button id="back_my_images" class="btn btn-small" disabled="disabled">
+            <i class="icon-home"></i> {% trans "My Images" %}
+        </button>
+        <button host="inside"  id="add_image_open_modal" class="btn btn-small">
+            <i class="icon-upload"></i> {% trans "Add New" %}
+        </button>
+        <button host="facebook" id="browse_facebook" class="btn btn-small">
+            <i class="icon-search"></i> {% trans "Facebook" %}
+        </button>
+        <button host="instagram" id="browse_instagram" class="btn btn-small" data-form="search_form">
+            <i class="icon-search"></i> {% trans "Instagram" %}
+        </button>
+        <button host="pinterest" id="browse_pinterest" class="btn btn-small" data-form="search_form">
+            <i class="icon-search"></i> {% trans "Pinterest" %}
+        </button>
+        <button host="flickr" id="browse_flickr" class="btn btn-small" data-form="search_form">
+            <i class="icon-search"></i> {% trans "Flickr" %}
+        </button>
+        <button host="photobucket" id="browse_photobucket" class="btn btn-small" data-form="search_form">
+            <i class="icon-search"></i> {% trans "Photobucket" %}
+        </button>
+    </div>
+
+    <div class="data-form">
+
+        <div id="search_form" class="control-group search_form hide">
+            <input class="input-small text-search keywords" id="search_text" type="text"
+                   placeholder="{% trans "Keyword" %}"
+                   instagram-msg="{% trans "Keyword is required and maximum 1 word." %}"
+                   pinterest-msg="{% trans "Keyword is required." %}"
+                   flickr-msg="{% trans "Keyword is required." %}"
+                   photobucket-msg="{% trans "Keyword is required and maximum 1 word." %}"
+                   value="{% if keywords %}{{ keywords }}{% endif %}">
+
+            <button id="search_button" class="btn btn-search btn-small btn-primary submit" type="button">
+                {% trans "Search" %}
+            </button>
+        </div>
+
+        <div id="facebook_up_to" class="btn-group pull-right hide">
+            <span id="browse_facebook_up_to" class="btn btn-small"><i class="icon-arrow-up"></i> {% trans "Back" %}</span>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,17 @@
+{% load i18n staticfiles thumbnail %}
+
+<li id="image_{{ image_obj.id }}" class="item image-item">
+    <span class="icons text-right ">
+        <i class="icon-remove"
+           data-parent="image_{{ image_obj.id }}"
+           data-link="{% url 'remove-media' pk=image_obj.id %}"></i>
+    </span>
+
+    <a class="image-href" title="{{ image_obj.title }}" data-href="{{ image_obj.image.url }}"
+       href="{% thumbnail image_obj.image "x500" as preview %}{%  static preview.url %}{% endthumbnail %}">
+        {% thumbnail image_obj.image "x180" as img %}
+            <img class="img-rounded" src="{% static img.url %}" alt="{{ image_obj.title }}" data-id="{{ image_obj.id }}">
+        {% endthumbnail %}
+    </a>
+    <label>{{ image_obj.title }}</label>
+</li>

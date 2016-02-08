@@ -1,0 +1,24 @@
+{% load url from future %} {% load i18n staticfiles thumbnail %}
+<div id="make_video_form" class="control-group">
+
+    <div id="make_video_message" class="alert alert-info alert-dismissable" style="display: none">
+        <div>
+            {% trans "Your video is processing. You can wait to preview the video or click Ok to add it now." %}
+        </div>
+
+        <div class="text-left">
+            <br><br>
+            <button host="" id="create_new_video" class="btn btn-small">
+                <i class="icon-camera"></i> {% trans "Capture a new video" %}
+            </button>
+        </div>
+
+    </div>
+
+    <div id="new_video_widget"></div>
+
+    <input type="hidden" id="new_video_data" name="new_video_data" value="" data-id="" data-thumb="" data-desc="">
+
+    <div id="new_video_player"></div>
+
+</div>

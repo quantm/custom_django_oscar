@@ -1,0 +1,88 @@
+{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Sample Product 2</title>
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript">
+        var fbAppId = '{{ FACEBOOK_APP_ID }}',
+            add_product_link = '/me/{{ app_path }}';
+    </script>
+    <script src="{% static 'js/fb/init.js' %}"></script>
+
+
+	<style type="text/css" media="screen">
+		.warper{
+			display:block;
+			width:600px;
+			height:auto;
+		}
+		body {
+			font-family: Helvetica, sans-serif;
+		}
+		
+		.wrapper {
+			margin: 0 auto;
+			width: 640px;
+		}
+		
+		h1 {
+			font-size: 1.4em;
+			text-align: center;
+		}
+		
+		table {
+			width: 100%;
+		}
+		
+		.key {
+			text-align: right;
+			width: 200px;
+		}
+		
+		.key, .value {
+			padding: 3px 10px 3px 0;
+			word-break: break-word;
+		}
+		
+		tr:nth-of-type(even) {
+			background-color: #DDDDDD;
+		}
+		
+		tr:nth-of-type(odd) {
+			background-color: #EEEEEE;
+		}
+	</style>
+</head>
+<body style="text-align:center;">
+
+<div class="warper">
+	<div id="fb-root"></div>
+		
+	<div style="float:left; width:100%;">
+		<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="2" data-scope="publish_actions" style="float:left;"></div>
+        <p style="float:left"><input type="button" id="post_to_facebook" value="Post product to Facebook"></p>
+
+	</div>
+	<div style="float:left; width:100%;">
+		<div id="result"></div>
+
+	</div>
+</div>
+<div align="left">
+    <script src="{% static 'js/fb/publish.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $( document ).on( "click", '#post_to_facebook', function() {
+                publish_action_link(fbAppId, add_product_link, function(response) {
+                    console.log(response);
+                });
+            });
+        });
+    </script>
+
+</div>
+
+</body>
+</html>

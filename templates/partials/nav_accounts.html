@@ -1,0 +1,62 @@
+{% load url from future %}
+{% load i18n staticfiles %}
+
+<div id="top_page" class="navbar navbar-fixed-top accounts">
+    <div class="navbar-inner">
+
+        {# This is used in mobile view #}
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".account-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+        <div class="nav-collapse account-collapse">
+            <div class="container-fluid">
+                <ul class="nav">
+                    {% if user.is_authenticated %}
+                        <li>
+                            {% if num_unread_notifications > 0 %}
+                                {# If user has new notifications - we change account link to go to inbox #}
+                                <a id="notify-number" href="{% url 'customer:notifications-inbox' %}">
+
+                                    <img class="avatar small" src="{{ user.get_avatar_src_full_url }}"/>
+
+                                    {% trans "Account" %}
+                                    <span class="label number label-important">{{ num_unread_notifications }}</span>
+                                </a>
+                            {% else %}
+                                <a id="notify-number" href="{% url 'customer:summary' %}">
+
+                                <img class="avatar small" src="{{ user.get_avatar_src_full_url }}"/>
+                                
+                                {% trans "Account" %} <span class="label number label-important hide">{{ num_unread_notifications }}</span></a>
+                            {% endif %}
+                        </li>
+                        {% if user.is_staff %}
+                        <li><a href="{% url 'dashboard:index' %}"><i class="icon-list-ul"></i> {% trans "Dashboard" %}</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'customer:logout' %}"><i class="icon-signout"></i> {% trans "Logout" %}</a></li>
+                    {% else %}
+                        <li><a href="{% url 'customer:login' %}"><i class="icon-signin"></i> {% trans "Login or register" %}</a></li>
+                    {% endif %}
+                </ul>
+                
+                {% if LANGUAGES|length > 1 %}
+                    <form id="language_selector" class="pull-left navbar-form" action="/i18n/setlang/" method="post">
+                        {% csrf_token %}
+                        <select name="language">
+                            {% for language in LANGUAGES %}
+                            <option value="{{ language.0 }}" {% if LANGUAGE_CODE == language.0 %}selected="selected"{% endif %}>{{ language.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn" type="submit">{% trans "Go" %}</button>
+                    </form>
+                {% endif %}
+
+                {% block mini_basket %}{% include "partials/mini_basket.html" %}{% endblock %}
+            </div>
+        </div>
+
+    </div>
+</div>

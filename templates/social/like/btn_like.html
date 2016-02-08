@@ -1,0 +1,7 @@
+{% load i18n %}
+<div class="wrapper-like" data-object-type="{{ object_type }}" data-object-id="{{ object_id }}" data-action="{% if is_liked %}unlike{% else %}like{% endif %}">
+    <a class="like-text" href="#" data-like-text="{% trans 'like' %}" data-unlike-text="{% trans 'unlike' %}">{% if is_liked %}{% trans 'unlike' %}{% else %}{% trans 'like' %}{% endif %}</a>
+    <div class="wrapper-icon-like">
+        <i class="like-icon icon-thumbs-up"></i> <sup class="like-count">{{ like_count }}</sup>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+{% load thumbnail staticfiles %}
+{% with object=item.object %}
+    {% thumbnail object.image "x200" upscale=False as thumb %}
+        <a href="{{object.get_absolute_url}}"  target="_blank" title="{{ object.title }}">
+            <img src="{% static thumb.url %}"
+                 alt="{{ object.title }}"
+                 title="{{ object.title }}"
+                 class="collection_thumbnail view"
+                 style="display: inline-block; width: 100%; height: 100%; {% if collection_name.0.status == 'c' %}max-width: 172px;{% endif %}">
+        </a>
+    {% endthumbnail %}
+{% endwith %}

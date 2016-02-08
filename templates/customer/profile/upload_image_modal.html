@@ -1,0 +1,51 @@
+{% load url from future %}
+{% load i18n staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "js/jquery.imgareaselect/css/imgareaselect-default.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "css/profile_style.css" %}" />
+<!-- Modal -->
+<div id="ImageUploadModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">{% trans "Avatar" %}</h3>
+        <input name="is_avatar" id="is_avatar" type="hidden" value="1">
+    </div>
+    <div class="modal-body">
+        <div class="preview">
+            <div class="preview_upload">
+                <div class="preview-text">
+                    {% trans "Preview the uploaded image" %}
+                </div>
+                <img id="preview_upload" class="preview" src="{% if img_resize %} {% static img_resize %}?ts={% now "U" %} {% endif %}">
+                <form id="form-upload-image" method="post" action="{% url "ajax_upload_avatar" %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="file" id="select-file" class="btn"/>
+                </form>
+            </div>
+            <div class="preview_avatar">
+                <div class="preview-text">
+                    {% trans "Preview the resized image" %}
+                </div>
+                <div class="avatar_wrapper">
+                    <img id="preview_avatar" class="preview avatar" src="{% if img_resize %} {% static img_resize %} {% endif %}">
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="loading"><img src="{% static "images/fb-loading.gif" %}"></div>
+        <form id="save-crop" method="post" action="{% url "crop_avatar" %}">
+            <span class="message"></span>
+            {% csrf_token %}
+            <input name="left" id="crop-left" type="hidden" value="0">
+            <input name="top" id="crop-top" type="hidden" value="0">
+            <input name="width" id="crop-width" type="hidden" value="200">
+            <input name="height" id="crop-height" type="hidden" value="200">
+            <input type="submit" value="Save" id="save-avatar" class="btn btn-primary"/>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static "js/jquery.form.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/image_upload_modal.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.imgareaselect/scripts/jquery.imgareaselect.min.js" %}"></script>

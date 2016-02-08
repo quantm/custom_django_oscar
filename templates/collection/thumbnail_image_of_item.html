@@ -1,0 +1,20 @@
+{% load i18n thumbnail staticfiles replace %}
+{% with image_obj=object.get_image_display %}
+    {% thumbnail image_obj image_obj|max_size as thumb %}
+        {% thumbnail image_obj 'x160' as best_img %}
+            {% thumbnail image_obj 'x90' as min_img %}
+                    <img src="{% static thumb.url %}"
+                         alt="{{ object.slug }}"
+                         title="{{ object.title }}"
+                         class="collection_thumbnail"
+                         best-w="{{ best_img.width }}"
+                         best-h="{{ best_img.height }}"
+                         min-w="{{ min_img.width }}"
+                         min-h="{{ min_img.height }}"
+                         preview-url="{% if object.type == 'video' %}{{ object.code }}{% else %}{% static image_obj.url %}{% endif %}"
+                         original-url="{% static image_obj.url %}" />
+
+            {% endthumbnail %}
+        {% endthumbnail %}
+    {% endthumbnail %}
+{% endwith %}

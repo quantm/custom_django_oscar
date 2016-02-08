@@ -1,0 +1,26 @@
+{% load thumbnail staticfiles %}
+<div class="item_tooltip" id="tooltip_design_{{ item.id }}">
+    <table class="table_list_item">
+        <tr>
+            <td>
+                {% with object=item.object %}
+                    {% thumbnail object.image "x200" upscale=False as thumb %}
+                        <a href="{{object.get_absolute_url}}"  target="_blank">
+                            <img class='list_item_img' src="{% static thumb.url %}" title="{{ object.title }}">
+                        </a>
+                    {% endthumbnail %}
+                {% endwith %}
+            </td>
+            <td>
+                <ul>
+                    {% with object=item.object %}
+                        <li><a href="{{object.get_absolute_url}}" target="_blank">{{ object.title }}</a></li>
+                        {% if item.type == 'product' %}
+                            <li><span  class="price_color">{{ object.get_price }}</span></li>
+                        {% endif %}
+                    {% endwith %}
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>

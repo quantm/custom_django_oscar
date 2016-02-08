@@ -1,0 +1,28 @@
+{% load url from future %}
+{% load currency_filters %}
+{% load i18n %}
+<link href="{{ STATIC_URL }}css/mini-basket.css" type="text/css" media="screen" rel="stylesheet"/>
+<ul class="cart hidden-phone">
+    <li>
+        <div class="btn-group">
+            <a class="btn" href="{% url 'basket:summary' %}">
+                {% trans "View basket" %}
+                <strong>
+                {% if request.basket.is_tax_known %}
+                    {{ request.basket.total_incl_tax|currency:request.basket.currency }}
+                {% else %}
+                    {{ request.basket.total_excl_tax|currency:request.basket.currency }}            
+                {% endif %}
+                </strong>
+            </a>
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-right">
+                <li>{% include "basket/partials/basket_quick.html" %}</li>
+            </ul>
+        </div>
+    </li>
+
+</ul><!-- /cart -->
+

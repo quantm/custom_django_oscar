@@ -1,0 +1,39 @@
+{% extends "customer/baseaccountpage.html" %}
+
+{% load url from future %}
+{% load i18n staticfiles thumbnail %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_videos_style.css" %}" />
+{% endblock %}
+
+{% block tabcontent %}
+
+    <ul class="unstyled my_videos my-medias" id="my-videos">
+        {% for video in object_list %}
+            {% include 'collection/media/render_my_video_item.html' %}
+        {% empty %}
+            <li>{% trans 'No video found' %}</li>
+        {% endfor %}
+    </ul>
+
+    <div id="total-page" class="total-page loading" style="display: none;"
+         data-load-more="{% url 'my-videos' %}"
+         data-total-page="{{paginator.num_pages}}">
+        <img src="{% static "images/fb-loading.gif" %}">
+    </div>
+
+{% endblock tabcontent %}
+
+{% block modal %}
+    {% include 'collection/message_confirm.html' %}
+{% endblock %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "js/masonry.pkgd.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/imagesloaded.pkgd.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/collection/pagination.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/collection/medias_remove.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/collection/my_videos.js" %}"></script>
+{% endblock %}

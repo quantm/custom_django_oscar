@@ -1,0 +1,87 @@
+{% load thumbnail %}
+{% load i18n %}
+{% load staticfiles %}
+<script id="img-wrapper-tmpl" type="text/x-jquery-tmpl">
+    <div class="rg-image-wrapper">
+        <div class="rg-image-nav">
+            <a href="#" class="rg-image-nav-prev">{% trans "Previous Image" %}</a>
+            <a href="#" class="rg-image-nav-next">{% trans "Next Image" %}</a>
+        </div>
+        <div class="rg-image"></div>
+        <div class="rg-loading"></div>
+        <div class="rg-caption-wrapper">
+            <div class="rg-caption" style="display:none;">
+                <p></p>
+            </div>
+        </div>
+    </div>
+</script>
+ <script type="text/javascript" src="{% static '/js/elastislide/jquery.elastislide.js'%}"></script>
+{% with all_images=product.images.all %}
+    {# use length rather then count as the images get queried anyways #}
+
+    {% if all_images|length > 1 %}
+
+
+        <div id="product-gallery" class="carousel slide">
+            <div class="thumbnail">
+                <div class="carousel-inner">
+                {% for image in all_images %}
+                    <div class="item {% if forloop.first %}active{% endif %}">
+                        {% thumbnail image.original "440x400" upscale=False as thumb %}
+                            <img data-toggle="modal"  href="#bootstrap_catalogue_product_image" onclick="get_catalogue_product_image('{% static thumb.url %}')" onmouseover="get_catalogue_product_name('{{ product.get_title }}')"  src="{% static thumb.url %}" alt="{{ product.get_title }}" />
+                        {% endthumbnail %}
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+
+            <ol class="carousel-indicators thumbnail">
+                {% for image in all_images %}
+                    <li data-target="#product-gallery" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}">
+                        {% thumbnail image.original "65x55" crop="center" as thumb %}
+                        <img src="{% static thumb.url %}" alt="{{ product.get_title }}" />
+                        {% endthumbnail %}
+                    </li>
+                {% endfor %}
+            </ol>
+
+            <a class="carousel-control left" href="#product-gallery" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#product-gallery" data-slide="next">&rsaquo;</a>
+        </div>
+
+    {% else %}
+
+        {# Only one image to show #}
+        <div class="es-carousel-wrapper">
+            <div class="rg-image single-image">
+            <h1>{{ product.original }}</h1>
+            {% with image=product.primary_image %}
+                {% thumbnail image.original "400x400" upscale=False as thumb %}
+                {% if not image.is_missing %}
+                    <a  data-toggle="modal"  href="#bootstrap_catalogue_product_image" onclick="get_catalogue_product_image('{% static thumb.url %}')" onmouseover="get_catalogue_product_name('{{ product.get_title }}')" >
+                        <img src="{% static thumb.url %}" data-large="{% static image.original.url %}" alt="image02" data-description="{% if image.caption %}{{ image.caption }}{% endif %}" />
+                    </a>
+                {% else %}
+                    <img src="{% static thumb.url %}" alt="image02" />
+                {% endif %}
+                {% endthumbnail %}
+            {% endwith %}
+            </div>
+        </div>
+
+    {% endif %}
+{% endwith %}
+
+<div class="modal hide fade" id="bootstrap_catalogue_product_image">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3 id="bootstrap_catalogue_product__name"></h3>
+    </div>
+    <div class="modal-body">
+        <img src="">
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-primary">{% trans "Close" %}</button>
+    </div>
+</div>

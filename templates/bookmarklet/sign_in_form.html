@@ -1,0 +1,27 @@
+{% extends 'bookmarklet/form.html' %}
+{% load i18n staticfiles %}
+{% block image_preview %}
+
+{% endblock %}
+
+{% block sign_in_submission %}
+    <div class="control-group submission">
+        <label class="control-label"></label>
+        <div class="controls">
+            <p><a target="_blank" href="/password-reset/">I've forgotten my password</a></p>
+            <button type="submit" class="btn">Sign in</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block form_title %}
+    <h2>{% trans "Sign in" %}</h2>
+{% endblock %}
+
+{% block form_message %}
+    <br>
+    {% if message %}
+        <p class="text-error">{{ message }}</p>
+        <br>
+    {% endif %}
+{% endblock %}

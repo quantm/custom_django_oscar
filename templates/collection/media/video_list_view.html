@@ -1,0 +1,29 @@
+{% extends "customer/base_view_profile.html" %}
+
+{% load url from future %}
+{% load i18n staticfiles thumbnail %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_videos_style.css" %}" />
+{% endblock %}
+
+{% block tabcontent %}
+    {% if object_list|length > 0 %}
+    <ul class="unstyled my_videos">
+        {% for video in object_list %}
+            <li>
+                <p>
+                    <a href="{% url 'video-detail-other-profile' video.pk %}?user_id={{ view_user.id }}">
+                        {% thumbnail video.get_image_display "x120" crop="center" as img %}
+                            <img class="img-rounded" src="{% static img.url %}" alt="{{ video.title }}">
+                        {% endthumbnail %}
+                    </a>
+                </p>
+                <label>{{ video.title }}</label>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>{% trans 'No video found' %}</p>
+    {% endif %}
+{% endblock tabcontent %}

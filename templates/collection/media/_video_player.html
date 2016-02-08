@@ -1,0 +1,16 @@
+{% load i18n staticfiles thumbnail get_item %}
+{% if object.slug == 'vine' %}
+    <video controls="controls">
+        <source src="{{ object.code }}" type="video/mp4">
+    </video>
+{% else %}
+    {% with parammer="version=3&rel=0&autohide=1&showinfo=0&cc_load_policy=1&wmode=transparent&hd=1&modestbranding=1&fs=1&controls=0&color2=FBE9EC&border=1" %}
+        <object class="detail-video-player"
+                type="application/x-shockwave-flash"
+                data="http://www.youtube.com/v/{{ object.code }}?{{ parammer }}">
+            <param name="movie" value="http://www.youtube.com/v/{{ object.code }}?{{ parammer }}" />
+            <param name="allowFullScreen" value="true" />
+            <param name="allowscriptaccess" value="always" />
+        </object>
+    {% endwith %}
+{% endif %}

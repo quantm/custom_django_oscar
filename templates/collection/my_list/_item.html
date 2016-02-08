@@ -1,0 +1,17 @@
+{% load url from future %}
+{% load product_tags i18n staticfiles %}
+
+<tr class="item" id="list_{{ c_list.id }}">
+    <td>{{ c_list.name }}</td>
+    <td>{{ c_list.create }}</td>
+    <td class="text-center">{{ c_list.num_product }}</td>
+    <td class="text-center"><a href="{% url 'my-list-detail' pk=c_list.pk %}">{% trans 'View' %}</a></td>
+    <td class="icons">
+        {% if c_list.default == False %}
+            <i class="icon-remove"
+               data-parent="list_{{ c_list.id }}"
+               data-link="{% url 'delete-my-list' pk=c_list.pk %}"></i>
+        {% endif %}
+    </td>
+
+</tr>

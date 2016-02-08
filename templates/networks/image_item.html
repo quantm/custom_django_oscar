@@ -1,0 +1,16 @@
+<div class="abilities media-item image not-clone" data-id="{{ item.id|safe }}" data-type="image">
+    <div class="image_collection">
+        <img class="collection_thumbnail"
+             alt=""
+             src="{{ item.thumbnail_url }}"
+             title="{{ item.title|striptags }}"
+             preview-url="{{ item.original_url }}" />
+    </div>
+    <input type="hidden" name="objects[]" class="object-id-value"
+           value="{{ item.id|safe }}"
+           data-id="{{ item.id|safe }}"
+           data-url="{{ item.original_url }}"
+           data-title="{{ item.title|striptags }}"
+           data-desc="{{ item.description|striptags }}"
+           album-id="{% if album_id %}{{ album_id }}{% endif %}"/>
+</div>

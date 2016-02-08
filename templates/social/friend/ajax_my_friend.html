@@ -1,0 +1,15 @@
+{% load staticfiles %}
+{% for friend in results %}
+    <li class="prod-item">
+        <div class="product_pod">
+            <div class="image_container">
+                <a href="/accounts/profile/{{ friend.user_obj.id }}" class="prod-link" osc-logged-in="1">
+                    <div class="prod-info">
+                        <h3 class="title">{{ friend.user_obj.full_name }}</h3>
+                    </div>
+                    <img src="{{ friend.user_obj.avatar }}" alt="" class="thumbnail" width="185">
+                </a>
+            </div>
+        </div>
+    </li>
+{% endfor %}

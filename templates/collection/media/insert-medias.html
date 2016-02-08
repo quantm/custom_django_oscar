@@ -1,0 +1,82 @@
+{% load i18n staticfiles %}
+
+{% block extrastyles %}
+    <link href="{% static "css/insert_media_modal.css" %}" type="text/css" media="screen" rel="stylesheet"/>
+{% endblock %}
+
+{% block modal %}
+    {# Using for show message when saved --------- #}
+    <div id="insert_media" class="modal hide fade insert-media-modal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>{% trans "Insert Medias" %}</h3>
+        </div>
+        <div class="modal-body">
+            <div id="tabs">
+                <ul>
+                    <li data-type="video" toolbar="my_videos_toolbar"><a href="{% url 'my-list-list-of-type' 'video' %}">{% trans "My videos" %}</a></li>
+                    <li data-type="image" toolbar="my_images_toolbar"><a href="{% url 'my-list-list-of-type' 'image' %}">{% trans "My images" %}</a></li>
+                </ul>
+                <div id="toolbar-header">
+                    {% include 'collection/media/insert-medias-toolbar.html' %}
+                </div>
+                <div id="ui-tabs-1" class="medias-tab-content"></div>
+                <div id="ui-tabs-2" class="medias-tab-content"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="loading" style="display: none;"><img src="{% static "images/fb-loading.gif" %}"></div>
+            <div class="message" style="display: none;"></div>
+            <button class="btn btn-primary" id="insert_media_ok_btn">{% trans "OK" %}</button>
+            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+    </div>
+    {% include "customer/profile/upload_image_modal.html" %}
+
+    <div class="modal hide fade" id="message__modal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>{% trans "Message" %}</h3>
+        </div>
+        <div class="modal-body">
+            <p class="message"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+    </div>
+
+    <div class="modal hide fade" id="preview_modal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3 data-loading-text="{% trans "Loading" %}">{% trans "Loading" %}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="preview image-preview">
+
+            </div>
+
+            <div id="vine-preview" class="vine-preview" style="display: none">
+                <video id="vine_player" controls autoplay style="display: none">
+                    <source src="" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="preview video-preview">
+                <div id="youtube_player" class="player"></div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <div class="loading" style="display: none;"><img src="{% static "images/fb-loading.gif" %}"></div>
+            <div class="alert message" default="{% trans 'You are must close before do that.' %}" style="display: none;"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extrascripts %}
+    <script type="text/javascript" src="{% static "js/networks/youtube_upload_widget_api.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/init_insert_medias.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/fb/init.js" %}"></script>
+{% endblock %}

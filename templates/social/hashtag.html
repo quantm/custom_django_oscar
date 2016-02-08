@@ -1,0 +1,15 @@
+{% load i18n staticfiles %}
+{% with len=arr_length %}
+    [
+        {% for user_hashtag in hashtag %}
+                {
+                    "id":{{ user_hashtag.id }},
+                    "name":"#{{ user_hashtag.name }} ",
+                    "avatar":"{% static MEDIA_URL %}{{ user_hashtag.image }} ",
+                    "type":"contact2"
+                }
+                {% if len > forloop.counter %},{% endif %}
+        {% endfor %}
+    ]
+{% endwith %}
+

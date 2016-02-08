@@ -1,0 +1,5 @@
+{% load i18n staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "css/social-buttons.css" %}" />
+<div id="fb-root"></div>
+<button id="login_facebook" class="btn btn-facebook">{% trans 'Connect Facebook' %}</button>
+<script type="text/javascript" src="{% static "js/fb/init.js" %}"></script>

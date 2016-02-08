@@ -1,0 +1,39 @@
+{% extends "customer/base_view_profile.html" %}
+
+{% load url from future %}
+{% load i18n staticfiles thumbnail %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_videos_style.css" %}" />
+{% endblock %}
+
+{% block title %}
+    {{ object.title }}
+{% endblock %}
+
+{% block tabcontent %}
+    <div class="context-video-container">
+
+        <object type="application/x-shockwave-flash" style="width:560px; height:315px;"
+                data="http://www.youtube.com/v/{{ object.code }}?color2=FBE9EC&border=1&version=3&modestbranding=1&fs=1&controls=0&showinfo=0&hd=1">
+            <param name="movie" value="http://www.youtube.com/v/{{ object.code }}?color2=FBE9EC&border=1&version=3&modestbranding=1&fs=1&controls=0&showinfo=0" />
+            <param name="allowFullScreen" value="true" />
+            <param name="allowscriptaccess" value="always" />
+        </object>
+
+        <div class="context-right-panel">
+            <h3>{{ object.title }}</h3>
+            {# Comment info or video info #}
+            <div class="description">{{ object.description }}</div>
+            <div class="comments"></div>
+        </div>
+    </div>
+    <div class="context-other-container">
+        <h3>{% trans 'Other videos' %}</h3>
+        <ul class="unstyled my_videos">
+            {% for video in videos %}
+                {% include 'collection/media/render_my_video_item.html' %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock tabcontent %}

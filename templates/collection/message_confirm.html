@@ -1,0 +1,30 @@
+{% load product_tags i18n staticfiles thumbnail replace %}
+<div class="modal hide fade" id="message_confirm">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{% trans "Confirmation" %}</h3>
+    </div>
+    <div class="modal-body">
+        <h2 class="question">{% trans "Are you sure?" %}</h2>
+    </div>
+    <div class="modal-footer">
+        <div class="loading" style="display: none;">
+            <img src="{% static "images/fb-loading.gif" %}">
+        </div>
+        <a href="#" class="btn btn-small" data-dismiss="modal" id="no">{% trans "No" %}</a>
+        <button id="yes-btn" class="btn btn-primary btn-small">{% trans "Yes" %}</button>
+    </div>
+</div>
+
+<div class="modal hide fade" id="message_modal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{% trans "Message" %}</h3>
+    </div>
+    <div class="modal-body">
+        <p class="message"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+    </div>
+</div>

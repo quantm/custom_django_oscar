@@ -1,0 +1,53 @@
+{% extends "customer/baseaccountpage.html" %}
+
+{% load url from future %}
+{% load product_tags i18n staticfiles thumbnail replace like_tags %}
+
+{% block tabcontent %}
+    {% if object_list %}
+        <div id="my_list" class="mod prod-mod">
+            <input type="hidden" id="list_id" value="{{ list_obj.id }}">
+            {% for item in object_list %}
+                {% include 'collection/my_list/_object.html' %}
+            {% endfor %}
+        </div>
+
+        <div id="total-page" class="total-page loading" style="display: none;"
+             data-load-more="{% url 'my-list-detail' pk=list_obj.id %}"
+             data-total-page="{{paginator.num_pages}}">
+            <img src="{% static "images/fb-loading.gif" %}">
+        </div>
+
+    {% else %}
+        <p class="nonefound">{% trans "No products found." %}</p>
+    {% endif %}
+{% endblock tabcontent %}
+
+{% block title %}
+    {{ list_obj.name }}
+{% endblock %}
+
+{% block headertext %}
+    {{ list_obj.name }}
+    {% render_like_btn list_obj %}
+{% endblock %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_product_style.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_list.css" %}" />
+{% endblock %}
+
+{% block modal %}
+    {% include 'collection/message_confirm.html' %}
+{% endblock %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "js/masonry.pkgd.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/imagesloaded.pkgd.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/collection/medias_remove.js" %}?v=100"></script>
+    <script type="text/javascript" src="{% static "js/collection/pagination.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/collection/detail_my_list.js" %}"></script>
+
+{% endblock %}
+

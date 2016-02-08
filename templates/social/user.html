@@ -1,0 +1,15 @@
+{% load i18n staticfiles hash_tags %}
+{% with len=arr_length %}
+[
+    {% for user_hashtag in user %}
+        {
+            "id":{{ user_hashtag.id }},
+            "name":"@{{ user_hashtag.username }} ",
+            "avatar":"{{ user_hashtag.get_avatar_src_full_url }}",
+            "type":"user"
+        }
+    {% if len > forloop.counter %},{% endif %}
+    {% endfor %}
+]
+{% endwith %}
+

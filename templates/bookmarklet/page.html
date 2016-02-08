@@ -1,0 +1,48 @@
+{% load url from future %}
+{% load i18n staticfiles %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{{ page_title }}</title>
+
+	<link type="text/css" href="{% static "css/bookmarklet.css" %}" rel="stylesheet" />
+    <link href="{% static "oscar/css/styles.css" %}" type="text/css" rel="stylesheet">
+    {% block textntags %}
+        {% include 'social/plugin/textntags.html' %}
+    {% endblock textntags%}
+</head>
+<body>
+	<div align="center">
+		<div style="width:100%" class="contains">
+			<div class="header">
+                <span class="logo"><a href="#" class="logo"><img style="height:38px; width:auto" src="{{ STATIC_URL }}images/bookmark-let/oscar.png"></a></span>
+                <span></span>
+                <span class="close"><a href="#" class="close_box"><img src="{{ STATIC_URL }}images/bookmark-let/f-x.png"></a></span>
+            </div>
+            <div class="content">
+                <div id="form_content" class="form-content {% if message_content == None %}show{% else %}hide{% endif %}">
+                    {{ form_content }}
+                </div>
+                <div id="empty_content" class="empty-content hide">
+                    {{ empty_content }}
+                </div>
+                <div id="message_content" class="message-content {% if message_content == None %}hide{% else %}show{% endif %}">
+                    {{ message_content }}
+                </div>
+            </div>
+            <div class="footer">
+                <p class="submit-button">
+                    {% if user.is_authenticated %}
+                        <button id="submit" type="button" class="btn btn-small submit {% if message_content != None %}hide{% endif %}">
+                            {% trans "Send" %}
+                        </button>
+                    {% endif %}
+
+                    <button id="close_btn" class="btn btn-small close_box hide" type="button">{% trans "Close" %}</button>
+                </p>
+            </div>
+
+		</div>
+	</div>
+</body>
+</html>

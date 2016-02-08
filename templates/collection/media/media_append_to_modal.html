@@ -1,0 +1,17 @@
+{% load i18n staticfiles thumbnail replace default_filter %}
+
+{% if object_list|length > 0 %}
+    {% for media_obj in object_list %}
+        <div class="abilities not-clone shop media-item {{ type }}" data-id="{{ media_obj.id }}" data-type="{{ type }}">
+            <div class="image_collection">
+                {% with object=media_obj %}
+                    {% include 'collection/thumbnail_image_of_item.html' %}
+                {% endwith %}
+            </div>
+            <input type="hidden" name="objects[]" class="object-id-value" value="{{ media_obj.id }}" />
+        </div>
+    {% endfor %}
+    <div id="paging_{{ page_obj.number }}" class="total_page loading hide" data-total-page="{{paginator.num_pages}}"></div>
+{% else %}
+    <h3 class="empty">{% trans 'Empty' %}</h3>
+{% endif %}

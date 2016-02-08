@@ -1,0 +1,8 @@
+{% load url from future %}
+{% load basket_tags promotion_tags category_tags product_tags i18n staticfiles %}
+
+{% if products %}
+    {% for product in products %}
+        <li class="prod-item">{% render_product product %}</li>
+    {% endfor %}
+{% endif %}

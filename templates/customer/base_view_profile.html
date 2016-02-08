@@ -1,0 +1,69 @@
+{% extends "layout_2_col.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block title %}
+    {{ page_title }} | {% trans 'Account' %} | {{ block.super }}
+{% endblock %}
+
+{% block body_class %}account-profile{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'promotions:home' %}">{% trans 'Home' %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="{% url 'customer:summary' %}">{% trans 'Account' %}</a>
+            <span class="divider">/</span>
+        </li>
+        {% block extra_breadcrumbs %}{% endblock %}
+        <li class="active">{{ page_title }}</li>
+    </ul>
+{% endblock %}
+
+{% block headertext %}{{ page_title }}{% endblock %}
+
+{% block column_left %}
+    <div id="view-user-profile" class="hide" data-view-user-id="{{ view_user.id }}"></div>
+    <ul class="nav nav-pills nav-stacked">
+        {% block standard_tabs %}
+            <li{% if active_tab == 'profile' %} class="active"{% endif %}>
+                <a href="{% url 'view_user_profile_custom_url' view_user.username %}">{% trans "Profile" %}</a>
+            </li>
+            <li{% if active_tab == 'wishlists' %} class="active"{% endif %}>
+                <a href="{% url 'wishlist-list-view-other-profile' view_user.id %}">{% trans "Wish Lists" %}</a>
+            </li>
+            <li{% if active_tab == 'my-products' %} class="active"{% endif %}>
+                <a href="{% url 'my-product-other-profile' view_user.id %}">{% trans "Recommendations" %}</a>
+            </li>
+            <li{% if active_tab == 'my-collections' %} class="active"{% endif %}>
+                <a href="{% url 'my-collections-other-profile' view_user.id %}">{% trans "Collections" %}</a>
+            </li>
+            <li{% if active_tab == 'my-friends' %} class="active"{% endif %}>
+                <a href="{% url 'view-friends-other-profile' view_user.id %}">{% trans "Friends" %}</a>
+            </li>
+            <li{% if active_tab == 'my-list' %} class="active"{% endif %}>
+                <a href="{% url 'my-list-other-profile' view_user.id %}">{% trans "Lists" %}</a>
+            </li>
+            <li{% if active_tab == 'my-videos' %} class="active"{% endif %}>
+                <a href="{% url 'my-video-other-profile' view_user.id %}">{% trans "Videos" %}</a>
+            </li>
+            <li{% if active_tab == 'my-images' %} class="active"{% endif %}>
+                <a href="{% url 'my-images-other-profile' view_user.id %}">{% trans "Images" %}</a>
+            </li>
+            <li{% if active_tab == 'events' %} class="active"{% endif %}>
+                <a href="{% url 'my-events-other-profile' view_user.id %}">{% trans "Events" %}</a>
+            </li>
+            <li{% if active_tab == 'wall' %} class="active"{% endif %}>
+                <a href="{% url 'my-wall-other-profile' view_user.id %}">{% trans "Wall" %}</a>
+            </li>
+        {% endblock %}
+    </ul>
+{% endblock %}
+
+{% block content %}
+    {% block tabcontent %}{% endblock tabcontent %}
+{% endblock content %}

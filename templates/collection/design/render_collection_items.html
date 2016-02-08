@@ -1,0 +1,30 @@
+{% load i18n thumbnail staticfiles replace default_filter %}
+
+{% if collection_items %}
+    {% csrf_token %}
+    {% for item in collection_items %}
+        <div id="past_dropped_{{ item.id }}"
+             class="{{ item.class_name }}"
+             style="{{ item.style }}"
+             data-id="{{ item.id }}"
+             data-type="{{ item.type }}">
+            {% if item.type != 'text' %}
+                {% with object=item.object %}
+                    <div class="image_collection {% block order_style_class %}need_style_class{% endblock %}">
+                        {% include 'collection/thumbnail_image_of_item.html' %}
+                    </div>
+                    <input type="hidden"
+                           name="objects[]"
+                           class="object-id-value"
+                           value="{{ item.object_id }}"
+                           object-id="{{ item.object_id }}"
+                           object-type="{{ item.type }}" />
+                {% endwith %}
+            {% else %}
+                <div class="text-editable">{{ item.content|safe }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="collection-empty">{% trans "Your collection is empty." %}</p>
+{% endif %}

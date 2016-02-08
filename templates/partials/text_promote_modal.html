@@ -1,0 +1,26 @@
+{% load url from future %}
+{% load staticfiles i18n %}
+
+<div id="text_promote_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 class="modal-title">{% trans 'Your Text' %}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="product_image"></div>
+        <div class="product_media" id="text_promote_media_preview" title="Click to edit or add Media">Click to edit or add Media</div>
+        <div class="clear"></div>
+        <a id="btn_remove_media" href="#" class="pull-right">Remove</a>
+        <form id="frm_save_promote" method="post">
+            {% csrf_token %}
+            <input id="text_promote_product_id" name="product_id" type="hidden" value="">
+            <input id="text_promote_media_id" name="media_id" type="hidden" value="">
+            <textarea id="text_promote" name="text_promote"></textarea>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="loading" style="display: none;"><img src="{% static "images/fb-loading.gif" %}"></div>
+        <div class="message hide">{% trans "Text save success" %}</div>
+        <button id="text_btn_save" class="btn btn-primary">{% trans 'Save' %}</button>
+    </div>
+</div>

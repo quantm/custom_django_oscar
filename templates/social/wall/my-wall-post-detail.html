@@ -1,0 +1,73 @@
+{% extends "customer/baseaccountpage.html" %}
+{% load i18n staticfiles hash_tags collection_tags like_tags %}
+{% load url from future  %}
+
+{% block headertext %}
+            {% trans 'Conversation' %}
+{% endblock %}
+
+{% block extrastyles %}
+         <link rel="stylesheet" type="text/css" href="{% static "css/social.css" %}" />
+{% endblock extrastyles %}
+
+ {% block extrascripts %}
+        <script src="{% static 'js/social/wall.js' %}"></script>
+{% endblock extrascripts %}
+
+
+{% block tabcontent %}
+    {% include 'social/plugin/textntags.html' %}
+    <form id="frm_my_wall" method="post">
+      {% csrf_token %}
+    </form>
+    <div id="my_wall_wrapper" class="my_wall_wrapper">
+        {% for wall_parent in wall_post_detail%}
+          <div id="my-wall-post-{{ wall_parent.id }}" class="{% if wall_parent.message_id %}my_wall_child{% else %}my_wall_parent{% endif %}">
+            <img src="{{ wall_parent.user.get_avatar_src_full_url }}"/>
+            <span class="my_wall_username">{{ wall_parent.user.get_full_name }}</span>
+            <span class="my_wall_username">{% if wall_parent.user == wall_parent.friend %}{{ wall_parent.user.get_full_name }}{% else %}{{ wall_parent.friend.get_full_name }}{% endif %}</span>
+            <span class="my_wall_date_post">
+                {{ wall_parent.create_date | date:'SHORT_DATE_FORMAT' }} at {{ wall_parent.create_date | time:'P'}}
+            </span>
+            <div class="my_wall_parent wall_appended">
+            {% if 'http'|match:wall_parent.content or '@'|match:wall_parent.content or '#'|match:wall_parent.content %}
+                <span id="my_wall_content_child_link_{{ wall_parent.id }}" class="my-wall-message-link">
+                    {% render_wall_post wall_parent.content %}
+                </span>
+            {% else %}
+                    {{ wall_parent.content }}
+            {%endif%}
+            </div>
+            <div class="btn-delete-like">
+                <a data-id="{{ wall_parent.id }}" id="social-message-parent" data-toggle="modal"  href="#my_wall_delete_message">{% if wall_parent.user_id == request.user.id %}{% trans 'Delete' %}{% endif %}</a>
+                {% render_like_btn wall_parent %}
+            </div>
+         </div>
+        {% endfor %}
+        <div class="wrapper_appended"></div>
+        <div class="my_wall_text_comment_input" id="my_wall_text_comment_input_{{ parent_id }}">
+            <span class="avatar_wrapper" id="avatar_wrapper_{{ parent_id }}">
+                        <img class="my_wall_input_avatar" id="my_wall_avatar_{{ parent_id }}" src="{{ request.user.get_avatar_src_full_url }}"/>
+            </span>
+            <!--<span class="my_wall_username">{{ request.user.get_full_name }}</span>-->
+            <div class="clear_div_space"></div>
+            <div id="my_wall_comment" class="control-group">
+                <div class="controls">
+                    <span id="wrapper_textbox_{{ parent_id }}">
+                        <textarea id="textarea_wall_post_{{ parent_id }}" row="3" placeholder="Write a comment" class="textarea_wall_post"></textarea>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal hide fade" id="my_wall_delete_message">
+      {% render_alert set_id "Do you really want to delete this post ?" "/collection/view/" "Delete" "button" "" "btn_my_wall_delete_message" %}
+    </div>
+    <div class="modal hide fade" id="my_wall_delete_message_permission">
+      {% render_delete_permission %}
+    </div>
+    <input type="hidden" id="url_my_wall_save" value="{% url 'my_wall_save' %}">
+    <input type="hidden" id="url_self_my_wall_delete" value="{% url 'delete_my_wall_message' %}"/>
+    <input type="hidden" id="my_wall_delete_id">
+{% endblock tabcontent %}
+

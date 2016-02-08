@@ -1,0 +1,39 @@
+{% load url from future %}
+{% load history_tags %}
+{% load basket_tags %}
+{% load currency_filters %}
+{% load thumbnail %}
+{% load i18n %}
+{% load staticfiles %}
+
+
+
+{% if products %}
+    <ul class="basket_item">
+        {% for product in products %}
+            <li>
+                <div class="row-fluid">
+                    <div class="span3">
+                        <div class="image-container">
+                            {% with image=product.primary_image %}
+                                {% thumbnail image.original "x50" upscale=False as thumb %}
+                                <a href="{{ product.get_absolute_url }}"><img class="thumbnail" src="{% static thumb.url %}" alt="{{ product.get_title }}"></a>
+                                {% endthumbnail %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <div class="span5">
+                        <h4><a href="{{ product.get_absolute_url }}">{{ product.get_title }}</a></h4>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="form-actions">
+        <div class="pull-right">
+            <a id="gallery_lnk" href="#" class="btn btn-primary btn-small"><i class="icon-th"></i> {% trans "Gallery" %}</a>
+        </div>
+    </div>
+{% else %}
+    <div class="text-left my-list-empty"><p class="text-warning">{% trans "Your gallery is empty." %}</p></div>
+{% endif %}

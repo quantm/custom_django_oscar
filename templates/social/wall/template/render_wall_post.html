@@ -1,0 +1,27 @@
+{% load i18n compress staticfiles  hash_tags  %}
+{% load url from future %}
+{% with list=content|render_wall_content %}
+                   {% for item in list %}
+                        {% if item.key == 'http' %}
+                            <a href="{{ item.value }}">{{ item.value }}</a>
+                            {% if item.br %}
+                                <br/>
+                            {% endif %}
+                        {% endif %}
+                        {% if item.key == 'mention' %}
+                            <a href="{% url 'customer:profile-view' %}{{ item.value|get_username_from_mention }}">{{ item.value }}</a>
+                            {% if item.br %}
+                                <br/>
+                            {% endif %}
+                        {%endif%}
+                        {% if item.key == 'hash_tag' %}
+                            <a href="{% url 'HashtagList' %}{{ item.value|get_hash_tag_link }}">{{ item.value }}</a>
+                            {% if item.br %}
+                                <br/>
+                            {% endif %}
+                        {%endif%}
+                        {% if item.key == '' %}
+                            {{ item.value |linebreaksbr }}
+                        {%endif%}
+                   {% endfor %}
+{% endwith %}

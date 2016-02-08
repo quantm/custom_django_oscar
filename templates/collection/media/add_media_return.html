@@ -1,0 +1,12 @@
+{% load default_filter %}
+{% if message.code == 1 %}
+    {% load i18n staticfiles thumbnail replace %}
+    <div class="abilities not-clone shop media-item {{ message.type }} selected" data-id="{{ media_obj.id }}" data-type="{{ message.type }}">
+        <div class="image_collection">
+            {% with object=media_obj %}
+                {% include 'collection/thumbnail_image_of_item.html' %}
+            {% endwith %}
+        </div>
+        <input type="hidden" name="objects[]" class="object-id-value" value="{{ media_obj.id }}" />
+    </div>
+{% endif %}

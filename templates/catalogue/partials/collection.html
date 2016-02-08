@@ -1,0 +1,16 @@
+{% load url from future %}
+{% load thumbnail reviews_tags i18n display_tags staticfiles %}
+
+{% block product_image %}
+    <div class="image_collection"  id="product_images_{{ product.id }}">
+        {% with image=product.primary_image %}
+            {% thumbnail image.none_watermark "800" upscale=False as thumb %}
+                <img src="{% static thumb.url %}"alt="{{ product.get_title }}" id="image_product_{{ product.id }}" title="{{ product.get_title }}" class="collection_thumbnail">
+            {% endthumbnail %}
+        {% endwith %}
+    </div>
+    <input type="hidden" name="product[]" class="product-id-value" value="{{ product.id }}" />
+{% endblock %}
+
+	
+

@@ -1,0 +1,90 @@
+{% load url from future %}
+{% load reviews_tags thumbnail i18n display_tags staticfiles basket_tags stockrecord_tags currency_filters %}
+
+<div class="product_pod">
+    {% block product_image %}
+    <div class="image_container">
+            {% with image=product.primary_image %}
+                {% thumbnail product.original "480x480" upscale=False as thumb %}
+            {% with object_type=product.type %}
+            {% if object_type == "image" %}
+                <a href="#hastag_my_image" data-toggle="modal">
+                    <img src="{% static thumb.url %}" alt="{{ product.get_title }}" class="thumbnail">
+                </a>
+                <div class="modal hide fade" id="hastag_my_image">
+                    <div class="modal-header">
+                        <h3>{% trans product.title  %}</h3>
+                    </div>
+
+                    <div class="modal-body">
+                        <img src="{% static thumb.url %}" alt="{{ product.get_title }}" class="thumbnail">
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+                    </div>
+                </div>
+            {% endif %}
+            {% if object_type == "video" %}
+                {% with parammer="version=3&rel=0&autohide=1&showinfo=0&cc_load_policy=1" %}
+                    <iframe src="http://www.youtube.com/v/{{ product.code }}?{{ parammer }}"></iframe>
+                {% endwith %}
+            {% endif %}
+            {% if object_type == 43 or object_type == 47 %}
+                <a href="/catalogue/{{ product.product_slug }}_{{ product.product_id }}" class="prod-link" osc-logged-in="{% if user.is_authenticated %}1{% endif %}">
+                    <div class="prod-info">
+                    {% block product_title %}
+                        <h3 class="title">{{ product.title|truncatewords:4 }}</h3>
+                        {% block product_price %}
+                            <div class="price">
+                                {% if product.is_group %}
+                                    <a class="btn btn-full" href="{% url 'catalogue:detail' product.slug product.id %}">{% trans "View" %}</a>
+                                {% else %}
+                                    {% if session.availability.is_available_to_buy %}
+                                        {% basket_form request product as basket_form single %}
+                                        <form action="{% url 'basket:add' %}" method="post" id="add-to-cart">
+                                            {% csrf_token %}
+                                            {{ basket_form.as_p }}
+                                        </form>
+                                    {% endif %}
+                                {% endif %}
+                                {% if session.price.exists %}
+                                    {% if session.price.is_tax_known %}
+                                        <h3 class="price_text">{{ session.price.incl_tax|currency:session.price.currency }}</h3>
+                                    {% else %}
+                                        <h3 class="price_text">{{ session.price.excl_tax|currency:session.price.currency }}</h3>
+                                    {% endif %}
+                                {% endif %}
+                                {% block product_review %}
+                                    {% iffeature "reviews" %}
+                                        <p class="star-rating {{ product.rating|as_stars }} pull-right">
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                        </p>
+                                    {% endiffeature %}
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+                    {% endblock %}
+                    </div>
+
+                    <div class="prod-opacity hide"></div>
+                    <div class="wrapper-icon">
+                       <i class="icon icon-share-alt" osc-icon="share" title="{% trans "Share this product" %}"></i>
+                        {% if session.availability.is_available_to_buy %}
+                            <i class="icon icon-shopping-cart" osc-icon="cart" title="{% trans "Add to cart" %}"></i>
+                        {% endif %}
+                        <i class="icon icon-plus" osc-icon="plus" id="plus-product-{{ product.id }}" data-id="{{ product.id }}"></i>
+                        <i class="icon icon-plus" osc-icon="plus" title="{% trans "Add to my product" %}"></i>
+                    </div>
+                    <img src="{% static thumb.url %}" alt="{{ product.get_title }}" class="thumbnail">
+                </a>
+            {% endif %}
+            {% endwith %}
+                {% endthumbnail %}
+            {% endwith %}
+        </div>
+    {% endblock %}
+</div>

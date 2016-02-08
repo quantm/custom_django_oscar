@@ -1,0 +1,3 @@
+{% load url from future %}
+{% load staticfiles i18n %}
+<a href="{% url 'collection_design' %}?set_id={{ object_id }}">{% trans 'Click to view collection' %}</a>

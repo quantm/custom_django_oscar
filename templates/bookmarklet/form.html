@@ -1,0 +1,54 @@
+{% load i18n staticfiles %}
+<form id="{{ form_name }}" method="post" action="{% url action_path %}" enctype="multipart/form-data" class="form-horizontal bookmark-let-form">
+    {% block form_title %}
+
+    {% endblock %}
+
+    {% block form_message %}
+
+    {% endblock %}
+
+    {% block image_preview %}
+        <div class="image-preview">
+            <img class="f-preview" name="previewer" id="f-picked-image" src="" alt="">
+            <div id="f-imgpick">
+                <a href="#" did="0" class="img-pick disabled ctrl-left"><img src="{% static 'images/bookmark-let/f-left.png' %}"></a>
+                <a href="#" did="1" class="img-pick disabled ctrl-right"><img src="{% static 'images/bookmark-let/f-right.png' %}"></a>
+            </div>
+            <input type="hidden" name="f-tag_url" id="f-tag_url" value="">
+            <span class="caption-text" id="caption"></span>
+        </div>
+    {% endblock %}
+
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="control-group {{ field.id_for_label }}_wrapper" id="{{ field.id_for_label }}_wrapper">
+            <label class="control-label" for="{{ field.name }}">{{ field.label }}</label>
+            <div class="controls">
+                {{ field }}
+            </div>
+            <div id="{{ field.name }}_append_controls" class="append-controls"></div>
+        </div>
+    {% endfor %}
+
+    {% block sign_in_submission %}
+
+    {% endblock %}
+
+
+    <input type="hidden" id="total" name="total" value="">
+    <input type="hidden" id="idx" name="idx" value="">
+    <input type="hidden" id="loc" name="loc" value="">
+    <input type="hidden" id="caption" name="caption" value="">
+    <input type="hidden" id="video" name="video" value="">
+    <input type="hidden" id="src" name="src" value="">
+    <input type="hidden" id="title" name="title" value="">
+    <input type="hidden" id="lid" name="lid" value="">
+    <input type="hidden" id="lname" name="lname" value="">
+
+</form>
+
+{% block jsscript %}
+    <script type="text/javascript" src="{% static "js/form_add_product_to_collection.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bookmarklet/actions.js" %}"></script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% load url from future %}
+{% load reviews_tags thumbnail i18n display_tags staticfiles basket_tags stockrecord_tags currency_filters %}
+
+
+<div class="product_pod">
+    {% block product_image %}
+    <div class="image_container">
+        {% thumbnail hashtag.image "480x480" upscale=False as thumb %}
+        <a href="{% url "HashtagList" %}{{ hashtag.name }}" class="prod-link" osc-logged-in="{% if user.is_authenticated %}1{% endif %}">
+        <div class="prod-info">
+                    {% block product_title %}
+                        <h3 class="title">#{{ hashtag.name|truncatewords:4 }}</h3>
+                    {% endblock %}
+                    </div>
+        <img src="{% static thumb.url %}" alt="{{ product.get_title }}" class="thumbnail">
+        </a>
+        <div class="modal hide fade" id="hastag_my_image">
+        {% endthumbnail %}
+    </div>
+    {% endblock %}
+</div>

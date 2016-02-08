@@ -1,0 +1,16 @@
+{% load url from future %}
+{% load staticfiles thumbnail%}
+
+{% with product=item.object %}
+    <div class="product_pod item" id="item_{{ item.id }}">
+        <span class="icons text-right">
+            <i class="icon-remove" data-parent="item_{{ item.id }}"
+               data-link="{% url 'my-list-remove-item' list_pk=list_obj.id item_id=item.id %}" ></i>
+        </span>
+        {% thumbnail product.image 'x160' as thumb %}
+            <div class="image_container">
+                <img class="img-rounded" src="{% static thumb.url %}" alt="{{ product.title }}" />
+            </div>
+        {% endthumbnail %}
+    </div>
+{% endwith %}

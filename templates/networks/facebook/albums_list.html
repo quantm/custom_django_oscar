@@ -1,0 +1,20 @@
+{% load i18n %}
+
+{% if auth.status == True %}
+    {% if result.data %}
+        <ul id="albums">
+        {% for album in result.data %}
+            {% if album.count %}
+                <li data-id="{{ album.id }}"><i class="icon-folder-open text-info"></i>
+                    <a href="" data-id="{{ album.id }}"> {{ album.name|safe }}</a>
+                    <small class="muted"><em class="muted">({{ album.count }} photo{{ album.count|pluralize }})</em></small>
+                </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% else %}
+    <div class="">
+        <p class="text-error text-center"><i class="icon-warning-sign"></i> {{ auth.message }}</p>
+    </div>
+{% endif %}

@@ -1,0 +1,49 @@
+{% extends "customer/baseaccountpage.html" %}
+
+{% load url from future %}
+{% load i18n staticfiles thumbnail get_item %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_videos_style.css" %}" />
+{% endblock %}
+
+{% block title %}
+    {{ object.title }}
+{% endblock %}
+
+{% block tabcontent %}
+    <div class="context-video-container">
+
+        {% include 'collection/media/_video_player.html' %}
+
+        <div class="context-right-panel">
+            <h3>{{ object.title }}</h3>
+            {# Comment info or video info #}
+            <div id="video_description_hash_tag_mention" class="description">{{ object.description }}</div>
+            <div class="comments"></div>
+        </div>
+    </div>
+    <div class="context-other-container">
+        <h3>{% trans 'Other videos' %}</h3>
+        <ul class="unstyled my_videos">
+            {% for video in videos %}
+                <li>
+                    {% thumbnail video.image "x120" crop="center" as img %}
+                        <p><a href="{% url 'video-detail' video.pk %}"><img class="img-rounded" src="{% static img.url%}" alt="{{ video.title }}"></a></p>
+                    {% endthumbnail %}
+                    <label>{{ video.title }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock tabcontent %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script  type="text/javascript" src="{% static "js/set_mention_hashtag_link.js" %}"></script>
+    <script>
+            $(document).ready(function(){
+                set_mention_hashtag_link("video_description_hash_tag_mention")
+            })
+    </script>
+{% endblock %}

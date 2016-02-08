@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+{% load category_tags %}
+{% load dashboard_tags %}
+{% load i18n %}
+{% load compress %}
+{% load staticfiles %}
+
+{% block mainstyles %}
+    {% compress css %}
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+        {% if use_less %}
+            <link rel="stylesheet" type="text/less" href="{% static "less/dashboard.less" %}" />
+        {% else %}
+            <link rel="stylesheet" type="text/css" href="{% static "css/dashboard.css" %}" />
+        {% endif %}
+    {% endcompress %}
+{% endblock %}
+
+{% block extrastyles %}
+    {{ block.super }}
+    {% compress css %}
+        <link rel="stylesheet" href="{% static "js/select2/select2.css" %}" />
+        <link rel="stylesheet" href="{% static "js/jquery/bootstrap-datepicker.css" %}" />
+    {% endcompress %}
+{% endblock %}
+
+{% block title %}
+    {% trans "Dashboard" %} | {{ block.super }}
+{% endblock %}
+
+{% block layout %}
+    {% block navbar %}
+    <div class="navbar navbar-static-top navbar-inverse navbar-accounts">
+        <div class="navbar-inner">
+            <div class="dashboard">
+                <span class="brand">{{ shop_name }}</span>
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-accounts">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+
+                <div class="nav-collapse nav-accounts collapse">
+                    <ul class="nav pull-right">
+                        <li><span>{% trans "Welcome" %} <em>{{ request.user.get_full_name|default:request.user.email }}</em></span></li>
+                        <li><a href="{% url 'promotions:home' %}"><i class="icon-home"></i> {% trans "Return to site" %}</a></li>
+                        <li><a href="{% url 'customer:summary' %}"><i class="icon-user"></i> {% trans "Account" %}</a></li>
+                        <li><a href="{% url 'customer:logout' %}"><i class="icon-signout"></i> {% trans "Log out" %}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div><!-- /navbar-inner -->
+    </div><!-- /navbar -->
+    {% endblock navbar %}
+
+    {% block dashboard_nav %}
+        {% dashboard_navigation request.user %}
+
+        <div class="navbar navbar-static-top navbar-inverse navbar-primary">
+            <div class="navbar-inner">
+                <div class="dashboard">
+
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-primary">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+
+                    <div class="nav-collapse nav-primary">
+                        <ul class="nav nav-pills dashboard">
+                            {% for item in nav_items %}
+                            <li class="dropdown">
+                                {% if item.is_heading %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
+                                    {{ item.label }} <b class="caret"></b>
+                                </a>
+                                {% else %}
+                                <a href="{{ item.url }}">
+                                    {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
+                                    {{ item.label }}
+                                </a>
+                                {% endif %}
+                                {% if item.has_children %}
+                                <ul class="dropdown-menu">
+                                    {% for subitem in item.children %}
+                                    <li>
+                                        <a href="{{ subitem.url }}">
+                                        {% if subitem.icon %}<i class="{{ subitem.icon }}"></i>{% endif %}
+                                        {{ subitem.label }}
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="container-fluid dashboard">
+        {% block breadcrumbs %}
+        <ul class="breadcrumb">
+            <li><a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a> <span class="divider">/</span></li>
+        </ul>
+        {% endblock %}
+
+        <div class="content">
+            {% include 'partials/alert_messages.html' %}
+            {% block header %}
+            <div class="page-header action">
+                <h1>{% block headertext %}{% endblock %}</h1>
+            </div>
+            {% endblock %}
+            <div class="page-content">
+                {% block content %}
+                    {% block dashboard_content %}{% endblock dashboard_content %}
+                {% endblock content %}
+            </div>
+        </div>
+    </div><!-- /container -->
+{% endblock %}
+
+{% block extrascripts %}
+    {{ block.super }}
+
+    <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
+
+    {% compress js %}
+
+    {# jQuery plugins #}
+    <!-- Custom Jquery UI, only contains date picker -->
+    <script src="{% static "js/mousewheel/jquery.mousewheel.min.js" %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static "js/scrollpane/jquery.jscrollpane.min.js" %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static "js/select2/select2.js" %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static "js/oscar/dashboard.js" %}" type="text/javascript" charset="utf-8"></script>
+    {% endcompress %}
+
+    <script src="//tinymce.cachefly.net/4.0/tinymce.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="//tinymce.cachefly.net/4.0/jquery.tinymce.min.js" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}
+
+{% block onbodyload %}
+    {{ block.super }}
+    oscar.dashboard.init();
+{% endblock %}

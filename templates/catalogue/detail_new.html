@@ -1,0 +1,51 @@
+{% extends "catalogue/detail.html" %}
+{% load url from future %}
+{% load i18n staticfiles like_tags %}
+
+{% block media_gallery %}
+    <div class="span6">
+        {% if promote_data.media.type == 'video' %}
+            <div class="wrapper-video-youtube">
+                <embed class="youtube-embed" src="http://www.youtube.com/v/{{ promote_data.media.code }}?wmode=opaque" style="z-index: 1" type="application/x-shockwave-flash"></embed>
+            </div>
+
+        {% elif promote_data.media.type == 'image' %}
+
+            {# Only one media to show #}
+            <div class="es-carousel-wrapper">
+                <div class="rg-image single-image">
+                    <a  data-toggle="modal"  href="#bootstrap_catalogue_product_image" onclick="get_catalogue_product_image('{% static 'media/' %}{{ promote_data.media.image }}')" onmouseover="get_catalogue_product_name('{{ product.get_title }}')" >
+                        <img style="max-height: 260px" src="{% static 'media/' %}{{ promote_data.media.image }}" data-large="{% static 'media/' %}{{ promote_data.media.image }}" alt="image" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="modal hide fade" id="bootstrap_catalogue_product_image">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3 id="bootstrap_catalogue_product__name"></h3>
+                </div>
+                <div class="modal-body">
+                    <img src="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">{% trans "Close" %}</button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+{% block media_user_avatar %}
+    <div class="span2">
+        <a href="{% url 'customer:profile-view' %}{{ promote_data.user.id }}"><img width="40" src="{{ promote_data.user.get_avatar_src_full_url }}"></a> <a href="{% url 'customer:profile-view' %}{{ promote_data.user.id }}"><span>{{ promote_data.user.get_full_name }}</span></a>
+    </div>
+    {% render_like_btn promote_data %}
+{% endblock %}
+{% block promote_text %}
+    <div class="span5">
+    {{ promote_data.text }}
+    </div>
+{% endblock %}
+{% block recently_viewed_products %}
+{% endblock %}

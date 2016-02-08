@@ -1,0 +1,9 @@
+{% load product_tags %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% if products %}
+    {% for product in products %}
+        <li class="prod-item">{% render_product product %}</li>
+    {% endfor %}
+{% endif %}

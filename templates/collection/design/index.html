@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+
+{% load i18n staticfiles thumbnail compress promotion_tags collection_tags category_tags replace %}
+
+{% block title %}
+    {% if current_collection %}
+        {{ current_collection.name }}
+    {% else %}
+        {% trans "Create collection" %}
+    {% endif %}
+{% endblock %}
+
+{% block layout %}
+
+    {% include "partials/nav_accounts.html" %}
+
+    <div class="collection_panel page collection_canvas">
+        <div class="navbar primary navbar-static-top navbar-inverse">
+            <div class="navbar-inner"><h2>{{ right }}{% trans "Canvas" %}</h2></div>
+        </div>
+
+        <div id="collection_left_panel" class="collection collection_canvas">
+
+            <div class="vertical_left_toolbar" id="vertical_left_toolbar">
+                <button id="new" class="btn btn-small left_menu_toolbar">
+                    <i class="icon-file"></i> {% trans "New" %}
+                </button>
+                <button id="open" class="btn btn-small left_menu_toolbar">
+                    <i class="icon-folder-open"></i> {% trans "Open" %}
+                </button>
+                <button id="save_draft" class="btn btn-small left_menu_toolbar">
+                    <i class="icon-download-alt"></i> {% trans "Save Draft" %}
+                </button>
+                <button id="view" class="btn btn-small left_menu_toolbar">
+                    <i class="icon-fullscreen"></i> {% trans "View & Publish" %}
+                </button>
+            </div>
+
+            <button type="button" class="btn text-tool" title="Enable/Disable text tool">
+                <i class="icon-text-width"></i>
+            </button>
+
+            <div id="toolbar_set" role="toolbar" class="btn-toolbar" {% if collection_items %} style="display: block;"{% endif %}>
+                <div class="btn-group">
+                    <button id="remove" class="btn btn-small">{% trans "Remove" %}</button>
+                    <button id="flop" class="btn btn-small">{% trans "Flop" %}</button>
+                    <button id="flip" class="btn btn-small">{% trans "Flip" %}</button>
+                    <button id="clone" class="btn btn-small">{% trans "Clone" %}</button>
+                    <button id="forwards" class="btn btn-small">{% trans "Forwards" %}</button>
+                    <button id="backwards" class="btn btn-small">{% trans "Backwards" %}</button>
+                </div>
+
+            </div>
+
+            <div id="drag_announce" class="collection_drag" {% if collection_items %}style="display: none;"{% endif %}>
+                {% trans "Please drag and drop item here to create collection" %}
+            </div>
+
+            <input type="hidden"
+                   name="collection_flags"
+                   id="collection_flags"
+                   next_action="open"
+                   link="{% url 'collection_view' %}?set_id="
+                   saved="{% if current_collection.status == 'c' %}0{% else %}1{% endif %}"
+                   value="{% if current_collection %}{{current_collection.pk}}{% else %}0{% endif %}"
+                   style="{% if current_collection.status != 'c' %}1{% else %}0{% endif %}">
+
+            {% if collection_items %}
+                {% if current_collection.status == 'c' %}
+                    {% render_item_no_style collection_items %}
+                {% else %}
+                    {% render_item_need_style collection_items %}
+                {% endif %}
+            {% endif %}
+
+
+
+        </div>
+    </div>
+
+    <div id="collection_right_panel" class="products page collection_panel">
+        <div class="navbar primary navbar-static-top navbar-inverse">
+            <div class="navbar-inner"><h2>{% trans "Available Items" %}</h2></div>
+        </div>
+        <div class="collection_wrapper">
+
+            <div class="insert-medias">
+                <div class="btn-group">
+                    <button id="btn_insert_media" class="btn btn-small btn-primary" type="button">
+                        <i class="icon-upload icon-white"></i>
+                        {% trans 'Insert Medias' %}
+                    </button>
+                </div>
+
+            </div>
+
+            <div id="current_product_display">
+                {% for item in right_items %}
+                    {% append_item_to_right_panel item %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% include "partials/footer.html" %}
+    
+{% endblock %}
+
+{% block modal %}
+    {{ block.super }}
+    {% include 'collection/media/insert-medias.html' %}
+    {% include "collection/design/modals.html" %}
+    {# include "partials/sign_in_modal.html" #}
+{% endblock %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script src="{% static "js/ckeditor/ckeditor.js" %}"></script>
+    <script src="{% static "js/ckeditor/adapters/jquery.js" %}"></script>
+    <script src="{% static "js/collection/design.js" %}"></script>
+    <script src="{% static "js/collection/text_tool.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/insert_media_modal.js" %}"></script>
+{% endblock %}
+
+{% block extrastyles %}
+    {{ block.super }}
+    <link href="{% static "css/collection.css" %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static "css/jquery.ui.rotatable.css" %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+{% endblock %}

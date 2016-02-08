@@ -1,0 +1,51 @@
+{% extends "customer/base_view_profile.html" %}
+{% load i18n staticfiles %}
+{% load url from future %}
+
+{% block headertext %}
+    {{ view_user.get_full_name }}{% trans '`s Wall' %}
+{% endblock %}
+
+{% block extrastyles %}
+         <link rel="stylesheet" type="text/css" href="{% static 'css/social.css' %}" />
+{% endblock extrastyles %}
+{% block extrascripts %}
+        <script src="{% static 'js/social/wall.js' %}"></script>
+        <script src="{% static 'js/social/post_comment.js' %}"></script>
+        <script src="{% static 'js/social/pagination.js' %}"></script>
+{% endblock extrascripts %}
+{% block tabcontent %}
+{% include 'social/plugin/textntags.html' %}
+<form id="frm_my_wall" action="{% url 'my-wall-message' %}">
+    {% csrf_token %}
+    <div class="control-group">
+        <div class="controls">
+            <div class="textntags-wrapper">
+                <textarea id="my_wall_textarea" name="textbox_comment" placeholder="Post a text message"></textarea>
+            </div>
+            <span class="help-block" id="my_wall_textarea_error_text"></span>
+            <input type="hidden" name="message_id" value="0">
+        </div>
+        <div class="controls">
+                <button id="my_wall_btn" type="button" class="btn btn-primary wall-button">{% trans 'Submit' %}</button>
+        </div>
+    </div>
+    <input type="hidden" id="pagination_total_page" value ="{{ total_page }}"/>
+    <input type="hidden" id="url_self_pagination" value="{% url 'my-wall-other-profile' user_friend_id %}"/>
+    <input type="hidden" id="url_self_my_wall_delete" value="{% url 'delete_my_wall_message' %}"/>
+    <input type="hidden" id="url_my_wall_save" value="{% url 'my_wall_save' %}"/>
+    <input type="hidden" id="my_wall_delete_id">
+    <input type="hidden" name="type" value="wall"/>
+    <input type="hidden" name="object_id" value="{{ view_user.id }}"/>
+    <input type="hidden" name="is_friend_post" value="1"/>
+</form>
+{% if wall %}
+<div class="my_wall_wrapper">
+    {% include "social/wall/my-wall-message.html" %}
+</div>
+{% else %}
+<div class="my_wall_wrapper"></div>
+<span id="my-wall-no-message" >{% trans 'No message found' %}</span>
+{% endif %}
+{% endblock tabcontent %}
+

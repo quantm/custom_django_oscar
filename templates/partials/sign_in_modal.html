@@ -1,0 +1,41 @@
+{% load url from future %}
+{% load staticfiles i18n %}
+
+<div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">{% trans "Login Form" %}</h3>
+    </div>
+
+    <div class="modal-body">
+        <form id="login_form" action="{% url 'customer:login' %}" method="post" class="form-stacked" style="margin: 0">
+            {% csrf_token %}
+            <input id="id_login-redirect_url" name="login-redirect_url"  type="hidden">
+            <input name="login_submit" value="{% trans "Log In" %}"  type="hidden">
+            <div class="control-group username-group">
+                <label for="login-username" class="control-label required">
+                    {% trans "Email Address" %}
+                     <span>*</span>
+                </label>
+                <div class="controls">
+                    <input id="login-username" name="login-username" type="text">
+                </div>
+            </div>
+            <div class="control-group password-group">
+                <label for="login-password" class="control-label required">
+                    {% trans "Password" %}
+                     <span>*</span>
+                </label>
+                <div class="controls">
+                    <input id="login-password" name="login-password" type="password">
+                </div>
+            </div>
+        </form>
+        <div class="login-msg pull-left"></div>
+    </div>
+    <div class="modal-footer">
+        <div class="loading" style="display: none;"><img src="{% static "images/fb-loading.gif" %}"></div>
+        {% include "partials/fb/init.html" %}
+        <button id="login-button" type="button" class="btn btn-primary">{% trans "Log In" %}</button>
+    </div>
+</div>

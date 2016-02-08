@@ -1,0 +1,37 @@
+{% load i18n staticfiles %}
+{% load url from future %}
+<link href="{% static 'css/form_of_add_product_modal.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+<div class="modal hide fade" id="ask_before_add_product_modal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{% trans "This product will be" %}</h3>
+    </div>
+    <div class="modal-body">
+        <form action="" method="post" enctype="multipart/form-data" id="add_product_form">
+            {% csrf_token %}
+            <div id="form_content" class="form_content">
+
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="loading" style="display: none;"><img src="{% static "images/fb-loading.gif" %}"></div>
+        <a href="#" class="btn btn-small" data-dismiss="modal">{% trans "Close" %}</a>
+    </div>
+</div>
+
+<div class="modal hide fade" id="add_product_modal_message">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{% trans "Message" %}</h3>
+    </div>
+    <div class="modal-body">
+        <p class="message-string"></p>
+        <p class="url-open-collection">
+            <a href="" class="close-modal btn-link" target="_blank"> {% trans 'Click here to view collection' %} </a>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+    </div>
+</div>

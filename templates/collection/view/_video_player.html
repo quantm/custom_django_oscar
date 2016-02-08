@@ -1,0 +1,15 @@
+{% if item.object.slug == 'vine' %}
+    <video controls="controls">
+        <source src="{{ item.object.code|safe }}" type="video/mp4">
+    </video>
+{% else %}
+    {% with parammer="version=3&rel=0&autohide=1&showinfo=0&cc_load_policy=1&wmode=transparent" %}
+        <object type="application/x-shockwave-flash"
+                data="http://www.youtube.com/v/{{ item.object.code|safe }}?{{ parammer }}">
+            <param name="movie" value="http://www.youtube.com/v/{{ item.object.code|safe }}?{{ parammer }}" />
+            <param name="allowFullScreen" value="true" />
+            <param name="allowscriptaccess" value="always" />
+            <param name="wmode" value="Opaque">
+        </object>
+    {% endwith %}
+{% endif %}

@@ -1,0 +1,10 @@
+{% load i18n staticfiles %}
+
+{% if search_images|length > 0 %}
+    {% for item in search_images %}
+        {% include 'networks/image_item.html' %}
+    {% endfor %}
+    <div class="total_page loading"  id="paging_{{ page_obj.number }}" data-total-page="{{paginator.num_pages}}"></div>
+{% else %}
+    <h3 class="empty">{% trans 'No image found' %}</h3>
+{% endif %}

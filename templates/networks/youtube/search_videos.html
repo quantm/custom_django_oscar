@@ -1,0 +1,22 @@
+{% load i18n staticfiles %}
+
+{% if search_videos|length > 0 %}
+    {% for item in search_videos %}
+        <div class="abilities media-item video not-clone" data-id="{{ item.id|safe }}" data-type="video">
+            <div class="image_collection">
+                <img class="collection_thumbnail"
+                     alt=""
+                     title="{{ item.title|safe }}"
+                     preview-url="{{ item.id|safe }}"
+                     src="http://i1.ytimg.com/vi/{{ item.id|safe }}/hqdefault.jpg" />
+            </div>
+            <input type="hidden" name="objects[]" class="object-id-value"
+                   value="{{ item.id|safe }}"
+                   data-id="{{ item.id|safe }}"
+                   data-title="{{ item.title|safe }}"/>
+        </div>
+    {% endfor %}
+    <div class="total_page loading" id="paging_{{ page_obj.number }}" data-total-page="{{paginator.num_pages}}"></div>
+{% else %}
+    <h3 class="empty">{% trans 'No video found' %}</h3>
+{% endif %}

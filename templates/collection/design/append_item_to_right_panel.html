@@ -1,0 +1,20 @@
+{% load url from future %}
+{% load thumbnail reviews_tags i18n display_tags staticfiles replace default_filter %}
+
+{% if item_obj %}
+    {% if item_obj.type != 'text' %}
+        <div class="abilities shop{% if item_obj.type == 'image' or item_obj.type == 'video' %} media-item{% endif %} {{ item_obj.type }}" data-id="{{ item_obj.id }}" data-type="{{ item_obj.type }}">
+            {% with object=item_obj.object %}
+                <div class="image_collection">
+                    {% include 'collection/thumbnail_image_of_item.html' %}
+                </div>
+                <input type="hidden"
+                       name="objects[]"
+                       class="object-id-value"
+                       value="{{ object.id }}"
+                       object-id="{{ object.id }}"
+                       object-type="{{ item_obj.type }}" />
+            {% endwith %}
+        </div>
+    {% endif %}
+{% endif %}

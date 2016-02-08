@@ -1,0 +1,27 @@
+{% load i18n staticfiles %}
+
+{% if search_videos|length > 0 %}
+    {% for item in search_videos %}
+        {% if item.id %}
+            <div class="abilities media-item image not-clone" data-id="{{ item.id|safe }}" data-type="image">
+                <div class="image_collection">
+                    <img class="collection_thumbnail"
+                         alt="vine"
+                         title="{{ item.title|striptags }}"
+                         src="{{ item.thumbnail_url }}"
+                         preview-url="{{ item.video_url|safe }}" />
+                </div>
+                <input type="hidden" name="objects[]" class="object-id-value"
+                       value="{{ item.id|safe }}"
+                       data-id="{{ item.id|safe }}"
+                       data-video="{{ item.video_url }}"
+                       data-image="{{ item.thumbnail_url }}"
+                       data-title="{{ item.title|striptags }}"
+                       data-desc="{{ item.description|striptags }}"/>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="total_page loading"  id="paging_{{ page_obj.number }}" data-total-page="{{paginator.num_pages}}"></div>
+{% else %}
+    <h3 class="empty">{% trans 'No image found' %}</h3>
+{% endif %}

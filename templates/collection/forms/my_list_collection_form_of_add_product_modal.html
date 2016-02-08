@@ -1,0 +1,22 @@
+{% load i18n get_item staticfiles replace %}
+<div class="control-group">
+    <div id="add_form" class="input-prepend input-append{% if collections|length == 0 %} hide{% endif %}">
+        <span class="add-on"> {% trans 'Add to' %} </span>
+        <div class="btn-group">
+            <select id="my_collections" class="collections">
+                {% for collection in collections %}
+                    <option new="0" value="{{ collection.id }}">{{ collection.name }}</option>
+                {% endfor %}
+                <option new="1" value="-1">{% trans "Create New" %}</option>
+            </select>
+
+        </div>
+        <button type="button" class="btn action btn-primary" id="add_btn" value="add"{% if not collections %} disabled="disabled"{% endif %}>{% trans 'Add' %}</button>
+    </div>
+    <div id="create_new_form" class="control-group input-prepend input-append{% if collections|length != 0 %} hide{% endif %}">
+        <span class="add-on" update="{% trans 'Change to ' %}">{% trans 'New a ' %} {{ form_name }}: </span>
+        <input class="span2" id="collection_name" type="text" placeholder="{{ form_name }} {% trans 'name ' %}">
+        <button type="button" class="btn action" id="create_btn" value="create" update="{% trans 'Update' %}">{% trans 'Create' %}</button>
+    </div>
+</div>
+

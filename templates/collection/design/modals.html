@@ -1,0 +1,69 @@
+{% load i18n staticfiles %}
+
+<div class="modal hide fade" id="collection_modal_save">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{% trans "Save your collection" %}</h3>
+    </div>
+    <form action="/collection/save/" method="post" enctype="multipart/form-data" id="collection_form" class="collection-form">
+        <input type="hidden" name="status" id="status" value="p">
+        <div class="modal-body">
+            {% csrf_token %}
+            <div class="control-group ">
+                <label class="control-label">{% trans 'Collection name' %}:</label>
+                <div class="controls"><input type="text" name="name" id="id_name" value="{{ current_collection.name }}"></div>
+                <button type="submit" name="save_collection_btn" id="save_collection_btn" data-close="keep" class="btn btn-primary">{% trans "Save" %}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{# Using for open collections ---------------- #}
+<div class="collections-opening modal hide fade" id="open_collections_modal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{% trans "Your collection items" %}</h3>
+    </div>
+    <div class="box-content">
+    </div>
+    <div class="modal-footer">
+        <div class="loading" style="display: none;"><img src="{% static "images/fb-loading.gif" %}"></div>
+        <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+    </div>
+</div>
+{# ------------------------------------------- #}
+
+{# Using for show message when saved --------- #}
+<div class="modal hide fade" id="collection_modal_message">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{% trans "Message" %}</h3>
+    </div>
+    <div class="modal-body">
+        <p class="no-select" style="display: none">{% trans "Please select item before you do that!" %}</p>
+        <p class="empty" style="display: none">{% trans "Please drag and drop item here to create collection" %}</p>
+        <p class="message"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+    </div>
+</div>
+{# ------------------------------------------- #}
+
+{# Using for show message when not already saved --------- #}
+<div class="modal hide fade" id="collection_modal_message_confirm">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{% trans "Confirmation" %}</h3>
+    </div>
+    <div class="modal-body">
+        <h2 class="question">{% trans "Do you want to save before?" %}</h2>
+        <input type="hidden" id="next_action" name="next_action" value="open">
+    </div>
+    <div class="modal-footer">
+        <div class="loading" style="display: none;"><img src="{% static "images/fb-loading.gif" %}"></div>
+        <a href="#" class="btn" data-dismiss="modal" id="no">{% trans "No" %}</a>
+        <button id="yes-btn" class="btn btn-primary">{% trans "Yes" %}</button>
+    </div>
+</div>
+{# ------------------------------------------- #}

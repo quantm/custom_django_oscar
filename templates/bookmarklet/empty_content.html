@@ -1,0 +1,5 @@
+{% load i18n staticfiles %}
+<h3 class="empty-message">{{ title }}</h3>
+{% for mes in message %}
+    <p class="empty-message">{% trans mes %}</p>
+{% endfor %}

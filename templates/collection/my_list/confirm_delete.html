@@ -1,0 +1,36 @@
+{% extends "customer/baseaccountpage.html" %}
+
+{% load url from future %}
+{% load product_tags i18n staticfiles %}
+
+{% block tabcontent %}
+
+    {% if object.default %}
+        <p>
+            <a href="{% url 'my-list-profile' %}">{% trans "Click here " %}</a>
+            {% trans "to come back " %}<b>{% trans "My Lists" %}</b>
+        </p>
+    {% else %}
+        <form action="" method="post">{% csrf_token %}
+            <p>{% trans "Are you sure you want to delete " %} "{{ object }}"?</p>
+            <input type="submit" value="{% trans "Confirm" %}" />
+        </form>
+    {% endif %}
+{% endblock tabcontent %}
+
+{% block headertext %}
+    {% if object.default %}
+        {% trans "Access denied." %}
+    {% else %}
+        {% trans "Delete " %}{{ object.name }}
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if object.default %}
+        {% trans "Access denied." %}
+    {% else %}
+        {% trans "Delete " %}{{ object.name }}
+    {% endif %}
+{% endblock %}
+

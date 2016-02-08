@@ -1,0 +1,15 @@
+{% load url from future %}
+{% load i18n staticfiles %}
+
+<br>
+<h1 class="message {% if message.code == 1 %}text-success{% else %}text-error{% endif %}">{{ message.message }}</h1>
+<br>
+<br>
+{% if message.code == 1 %}
+    <p class="btn-finished">
+        <a href="{{ message.link.url }}" class="btn btn-info finished" target="_blank">{{ message.link.text }}</a>
+    </p>
+{% endif %}
+<p class="btn-come-back">
+    <span id="btn_come_back" class="btn">{{ message.back_text }}</span>
+</p>

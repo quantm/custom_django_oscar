@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+{% load url from future %}
+{% load currency_filters stockrecord_tags i18n collection_tags hash_tags thumbnail staticfiles like_tags %}
+{% session_strategy request product as session %}
+{% load i18n staticfiles %}
+
+{% block extrastyles %}
+    <link href="{% static 'css/collection.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine"/>
+{% endblock %}
+
+{% block content %}
+    {% include 'social/plugin/textntags.html' %}
+    <div class="list_designed_item collection_canvas" id="list_designed_item">
+        {% for item in collection %}
+            {% render_collection_item item %}
+        {% endfor %}
+    </div>
+
+    <div class='list_item_right'>
+        <div class='collection_name'>
+            {% for collection_item in collection_name %}
+                <input type=hidden name="count_view" id="count_view" value={{collection_item.view}} />
+                {{ collection_item.name }}
+                {% render_like_btn collection_item %}
+            {% endfor %}
+
+        </div>
+        <!-- user box-->
+        <div class="collection_info_box">
+            <div class="user_info_box">
+                <img class="comment_avatar" class="" src="{{ avatar }}">
+                <div class="meta">
+                    <div>
+                        Created by <a  class="hover_clickable" href="{% url 'customer:profile-view' %}" rel="author">
+                            {% for collection_user in user_name %}
+                                {{ collection_user.first_name }} {{ collection_user.last_name }}
+                            {% endfor %}
+                        </a>
+                    </div>
+                <div>
+                13 days ago. <span id=count></span> views.<br>
+                <span style="margin-left: 1px">Follow</span>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='edit'>
+        {% if user.is_authenticated %}
+             {% for collection_user in user_name %}
+                {% if user.id == collection_user.id %}
+                     <a class='hover_clickable' href="{% url 'collection_design' %}?set_id={{set_id}}">Edit</a>
+                     <a class='hover_clickable' data-toggle="modal"  href="#form_delete">Delete</a>
+                     <a class='hover_clickable' data-toggle="modal"  href="#form_share">Share</a>
+                     <a class='hover_clickable' data-toggle="modal"  href="#form_invite">Invite friend</a>
+                {% endif %}
+             {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- comment form -->
+        <div class="comment_box" >
+            <form id="comment_form" method="post" class="comment_collection_form">
+                <div class="control-group">
+                    {% csrf_token %}
+                    <div class="controls">
+                        <div class="textntags-wrapper">
+                            <textarea  id="right_text_comment" class='textarea_comment'  name="textbox_comment" placeholder="Post a text message"></textarea>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                    <div class="controls">
+                        <button id="btn_comment_right" type="button" class="btn btn-primary wall-button">{% trans 'Submit' %}</button>
+                    </div>
+                    <input type="hidden" name="type" value="collection"/>
+                    <!--<input type="hidden" id="current_set_id" name="current_set_id" value="{{ set_id }}"/>-->
+                    <input type="hidden" name="message_id" id="message_id" value="0"/>
+                    <input type="hidden" name="object_id" id="object_id" value="{{ set_id }}"/>
+                    <input type="hidden" name="is_friend_post" value="0"/>
+                </div>
+            </form>
+            <div id="ajax_list_comment" class="list_comment_item">
+                {% render_collection_comment parent %}
+            </div>
+        </div>
+    </div>
+    </div>
+    <input type="hidden" id="url_collection_save_comment" value="{% url 'my_wall_save' %}"/>
+    <input type="hidden" id="url_self_collection_comment_delete" value="{% url 'delete_my_wall_message' %}"/>
+    <input type="hidden" id="collection_delete_id"/>
+    <!--RENDER BOOTSTRAP FORM-->
+    <div class="modal hide fade" id="form_collection_deleted">
+        <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>{% trans "Your collection has been deleted" %}</h3>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="btn_deleted" class="btn btn-primary" data-dismiss="modal">{% trans "OK" %}</button>
+        </div>
+    </div>
+
+    <div class="modal hide fade" id="form_delete">
+      {% render_alert set_id "Do you really want to delete this collection?" "/collection/view/" "Delete" "button" "" "btn_delete_collection"%}
+    </div>
+
+    <!--shared -->
+    <div class="modal hide fade" id="form_shared">
+    {% render_alert set_id "Your collection has been shared" "/collection/view/" "OK" "button" "modal" "" %}
+    </div>
+
+    <!--invited-->
+    <div class="modal hide fade" id="form_invited">
+     {% render_alert set_id "You have invited your friend to edit your collection" "/collection/view/" "OK" "button" "modal" "" %}
+    </div>
+
+    <!--invite-->
+    <div class="modal hide fade" id="form_invite">
+            {% render_user_template user_array "invite" "/collection/invite/" "Please choose your friend below to edit this collection" "Invite" selected_user "" "" %}
+    </div>
+
+    <!--share-->
+    <div class="modal hide fade" id="form_share">
+            {% render_user_template user_array "share" "/collection/share/" "Please choose friend below to share" "Share your collection" selected_user "" "" %}
+    </div>
+
+    <div class="modal hide fade" id="collection_comment_delete_message_permission">
+      {% render_delete_permission %}
+    </div>
+
+    <script  type="text/javascript" src="{% static 'js/collection/view.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/social/post_comment.js' %}"></script>
+{% endblock %}
+
+

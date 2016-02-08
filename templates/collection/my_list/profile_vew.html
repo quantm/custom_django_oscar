@@ -1,0 +1,42 @@
+{% extends "customer/base_view_profile.html" %}
+
+{% load url from future %}
+{% load product_tags i18n staticfiles %}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/my_product_style.css" %}" />
+{% endblock %}
+
+{% block tabcontent %}
+    {% if my_list %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'Name' %}</th>
+                    <th>{% trans 'Create date' %}</th>
+                    <th>{% trans 'Number products' %}</th>
+                    <th colspan="2">{% trans 'Actions' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c_list in my_list %}
+                <tr>
+                    <td>{{ c_list.pk }}</td>
+                    <td>{{ c_list.name }}</td>
+                    <td>{{ c_list.create }}</td>
+                    <td class="text-center">{{ c_list.num_product }}</td>
+                    <td class="text-center"><a href="{% url 'my-list-detail-other-profile' pk=c_list.pk %}?user_id={{ view_user.id }}">{% trans 'View' %}</a></td>
+                    <!--<td><a href="{% url 'my-list-delete' pk=c_list.pk %}">{% trans 'Delete' %}</a></td>-->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <section>
+            <div class="total-page loading" data-total-page="{{products.paginator.num_pages}}"></div>
+        </section>
+    {% else %}
+        <p class="nonefound">{% trans "No List found." %}</p>
+    {% endif %}
+{% endblock tabcontent %}

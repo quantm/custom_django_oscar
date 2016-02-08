@@ -1,0 +1,18 @@
+{% load url from future %}
+{% load i18n staticfiles thumbnail default_filter %}
+
+<li id="video_{{ video.id }}" class="item video-item">
+    <span class="icons text-right ">
+        <i class="icon-remove"
+           data-parent="video_{{ video.id }}"
+           data-link="{% url 'remove-media' pk=video.id %}"></i>
+    </span>
+    {% with object=video %}
+        <a href="{% url 'video-detail' object.pk %}">
+            {% thumbnail object.get_image_display "x120" crop="center" as img %}
+                <img class="img-rounded" src="{% static img.url %}" alt="{{ object.title }}">
+            {% endthumbnail %}
+        </a>
+    {% endwith %}
+    <label>{{ video.title }}</label>
+</li>

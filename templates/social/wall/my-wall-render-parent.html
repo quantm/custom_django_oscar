@@ -1,0 +1,41 @@
+{% load i18n compress staticfiles hash_tags collection_tags like_tags %}
+{% for parent_node in parent  %}
+    <div class="my_wall_parent" id="my-wall-post-{{ parent_node.id }}">
+        <img src="{% if parent_node.object_id == -1 %}{{ parent_node.friend.get_avatar_src_full_url }}{% else %}{{ parent_node.user.get_avatar_src_full_url }}{% endif %}">
+        <span class="my_wall_username">{% if parent_node.object_id == -1 %}{{ parent_node.friend.get_full_name }}{% else %}{{ parent_node.user.get_full_name }}{% endif %}</span>
+        <span class="my_wall_date_post">{{ parent_node.create_date | date:'SHORT_DATE_FORMAT' }} {% trans 'at' %} {{ parent_node.create_date | time:'P'}}</span>
+        <div id="appended_parent_{{ parent_node.id }}" class="my-wall-message-link">
+            {% if 'http'|match:parent_node.content or '@'|match:parent_node.content or '#'|match:parent_node.content %}
+                {% render_wall_post parent_node.content %}
+            {% else %}
+                {{ parent_node.content|linebreaksbr }}
+            {% endif %}
+        </div>
+        <div class="btn-delete-like">
+            <a href="#my_wall_delete_message" data-id="{{ parent_node.id }}" id="social-message-parent" data-toggle="modal">{% if request.user.id = parent_node.user.id %}{% trans 'Delete' %}{% endif %}</a>
+            {% render_like_btn parent_node %}
+            <input type="hidden" class="my-wall-obj-child-parent" id="my_wall_obj_message_parent_id">
+        </div>
+    </div>
+    <div class="clear_div_space"></div>
+    <div class="my_wall_text_comment_input" id="my_wall_text_comment_input_{{ parent_node.id }}">
+        <span class="avatar_wrapper" id="avatar_wrapper_{{ parent_node.id }}">
+            <img class="my_wall_input_avatar" id="my_wall_avatar_{{ parent_node.id }}" src="{{ request.user.get_avatar_src_full_url }}"/>
+        </span>
+        <!--<span class="my_wall_username">{{ full_name }}</span>-->
+        <div class="clear_div_space"></div>
+        <div id="my_wall_comment" class="control-group">
+            <div class="controls">
+                <span id="wrapper_textbox_{{ parent_node.id }}">
+                    <textarea id="textarea_wall_post_{{ parent_node.id }}" placeholder="Write a comment" class="textarea_wall_post"></textarea>
+                </span>
+                <span class="help-block" id="my_wall_textarea_error_text_{{ wall_child.id }}"></span>
+            </div>
+        </div>
+    </div>
+    <div class="clear_div_space"></div>
+    <input type="hidden" value="appended_parent_{{ parent_node.id }}" id="appended_parent">
+{% endfor %}
+<div class="modal hide fade" id="my_wall_delete_message">
+      {% render_alert set_id "Do you really want to delete this post ?" "/collection/view/" "Delete" "button" "" "btn_my_wall_delete_message" %}
+</div>
