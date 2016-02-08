@@ -1,0 +1,19 @@
+The code samples at code.google.com/p/youtube-api-samples are no longer
+being maintained. Please update your code samples from the following
+GitHub repository:
+   
+   https://github.com/youtube/api-samples
+
+
+
+To using Search Videos in Insert Media modal, We install 2 package before
+Ex:
+	- pip install google-api-python-client
+	- pip install oauth2client
+
+
+Document for that:
+	- google-api-python-client: The core Python library for accessing Google APIs.
+	(https://code.google.com/p/google-api-python-client/wiki/SampleApps)
+	- oauth2client: A Python client library for OAuth 2.0.
+	(https://code.google.com/p/youtube-api-samples/source/browse/#git%2Fsamples%2Fpython)
